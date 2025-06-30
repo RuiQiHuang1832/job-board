@@ -6,14 +6,21 @@ import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
 
 import { Input } from '../ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-
 interface AutocompleteProps {
   options: { id: string; label: string; value: string }[]
   placeholder?: string
   onInputChange?: (value: string) => void
+  inputClassName?: string
+  size: 'sm' | 'md' | 'lg'
 }
 
-export function Autocomplete({ options, placeholder, onInputChange }: AutocompleteProps) {
+export function Autocomplete({
+  options,
+  placeholder,
+  onInputChange,
+  inputClassName,
+  size,
+}: AutocompleteProps) {
   const [inputValue, setInputValue] = useState('')
   const [open, setOpen] = useState(false)
 
@@ -38,6 +45,11 @@ export function Autocomplete({ options, placeholder, onInputChange }: Autocomple
     setInputValue(option.label)
     setOpen(false)
   }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+    setOpen(true)
+    onInputChange?.(e.target.value)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -46,11 +58,9 @@ export function Autocomplete({ options, placeholder, onInputChange }: Autocomple
           placeholder={placeholder}
           value={inputValue}
           type="text"
-          onChange={(e) => {
-            setInputValue(e.target.value)
-            setOpen(true)
-            onInputChange?.(e.target.value)
-          }}
+          size={size}
+          className={inputClassName}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
       </PopoverTrigger>

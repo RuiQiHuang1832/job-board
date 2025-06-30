@@ -1,11 +1,13 @@
 'use client'
 import { useState } from 'react'
+import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import IconInput from '../../components/common/IconInput'
 import { JobFilter } from './JobFilter'
-import { LocationFilter } from './LocationFilter'
+import { LocationSearch } from './LocationSearch'
 
 export default function JobsPage() {
   // Mock data for now - you'll replace this later
@@ -49,9 +51,24 @@ export default function JobsPage() {
         <h1 className="mb-6">Find Your Next Job</h1>
 
         <div className="flex gap-4 mb-4">
-          <LocationFilter></LocationFilter>
-          <Input type="text" placeholder="Search jobs..." />
-          <Button variant="default">Search</Button>
+          <div className="flex-1/2">
+            <IconInput icon={AiOutlineSearch}>
+              <Input
+                className="pl-10"
+                type="text"
+                size="lg"
+                placeholder="Search jobs, keywords, companies..."
+              />
+            </IconInput>
+          </div>
+          <div className="flex-3">
+            <IconInput icon={AiOutlineEnvironment}>
+              <LocationSearch />
+            </IconInput>
+          </div>
+          <Button variant="default" size="lg">
+            Search
+          </Button>
         </div>
       </div>
 

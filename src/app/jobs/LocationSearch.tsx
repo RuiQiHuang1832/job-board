@@ -15,7 +15,7 @@ type LocationIQResponse = {
   }
 }
 
-export function LocationFilter() {
+export function LocationSearch() {
   const [locations, setLocations] = useState<Location[]>([])
   const [inputValue, setInputValue] = useState('')
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
@@ -28,12 +28,14 @@ export function LocationFilter() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedInputValue(inputValue)
-    }, 1000)
+    }, 300)
 
     return () => clearTimeout(timer)
   }, [inputValue])
 
   useEffect(() => {
+    setLocations([]) // Clear previous results
+
     // Only fetch if the debounced input value is not empty and at least 3 characters long
     if (!debouncedInputValue.trim() || debouncedInputValue.trim().length < 3) return
 
@@ -86,8 +88,10 @@ export function LocationFilter() {
   return (
     <Autocomplete
       options={locations}
-      placeholder="Enter location..."
+      placeholder={`Enter location or "remote"`}
       onInputChange={handleInputChange}
+      inputClassName="pl-10"
+      size="lg"
     />
   )
 }
