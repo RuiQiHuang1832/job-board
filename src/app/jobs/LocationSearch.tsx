@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Autocomplete } from '../../components/common/Autocomplete'
+import { AutocompleteSearch } from '@/components/common/AutocompleteSearch'
 
 interface Location {
   id: string
@@ -86,7 +86,7 @@ export function LocationSearch() {
   }, [debouncedInputValue])
 
   return (
-    <Autocomplete
+    <AutocompleteSearch
       options={locations}
       placeholder={`Enter location or "remote"`}
       onInputChange={handleInputChange}

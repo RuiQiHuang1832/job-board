@@ -6,7 +6,7 @@ import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
 
 import { Input } from '../ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-interface AutocompleteProps {
+interface AutocompleteSearchProps {
   options: { id: string; label: string; value: string }[]
   placeholder?: string
   onInputChange?: (value: string) => void
@@ -14,13 +14,13 @@ interface AutocompleteProps {
   size: 'sm' | 'md' | 'lg'
 }
 
-export function Autocomplete({
+export function AutocompleteSearch({
   options,
   placeholder,
   onInputChange,
   inputClassName,
   size,
-}: AutocompleteProps) {
+}: AutocompleteSearchProps) {
   const [inputValue, setInputValue] = useState('')
   const [open, setOpen] = useState(false)
 

@@ -6,26 +6,26 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-interface FilterOption {
+interface SelectOption {
   value: string
   label: string
 }
 
-interface FilterGroupProps {
-  options: FilterOption[]
+interface SelectFieldProps {
+  options: SelectOption[]
   placeholder: string
   onValueChange: (value: string) => void
   value?: string
   className?: string
 }
 
-export function FilterGroup({
+export function SelectField({
   options,
   placeholder,
   onValueChange,
   value,
   className,
-}: FilterGroupProps) {
+}: SelectFieldProps) {
   return (
     <Select onValueChange={onValueChange} value={value}>
       <SelectTrigger className={className}>

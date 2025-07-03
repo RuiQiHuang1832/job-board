@@ -1,12 +1,14 @@
 'use client'
-import { useState } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import IconInput from '../../components/common/IconInput'
-import { JobFilter } from './JobFilter'
+import { Stack } from '../../components/ui/stack'
+import { useJobFilters } from './_job-filter/useJobFilters'
+import JobCard from './JobCard'
+import { JobFilter } from './_job-filter/JobFilter'
 import { LocationSearch } from './LocationSearch'
 
 export default function JobsPage() {
@@ -41,8 +43,8 @@ export default function JobsPage() {
     },
   ]
 
-  const [jobType, setJobType] = useState<string>()
-  const [salary, setSalary] = useState<string>()
+
+  const { filters, updateFilter } = useJobFilters()
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -50,7 +52,7 @@ export default function JobsPage() {
       <div className="mb-8">
         <h1 className="mb-6">Find Your Next Job</h1>
 
-        <div className="flex gap-4 mb-4">
+        <Stack className="mb-4">
           <div className="flex-1/2">
             <IconInput icon={AiOutlineSearch}>
               <Input
@@ -66,48 +68,21 @@ export default function JobsPage() {
               <LocationSearch />
             </IconInput>
           </div>
-          <Button variant="default" size="lg">
+          <Button className="" variant="default" size="lg">
             Search
           </Button>
-        </div>
+        </Stack>
       </div>
-
       {/* Filters */}
-      <JobFilter
-        onJobTypeChange={setJobType}
-        onSalaryChange={setSalary}
-        jobType={jobType}
-        salary={salary}
-      />
+      <JobFilter updateFilter={updateFilter} filters={filters} />
       <h3 className="mb-6">Now Hiring</h3>
       {/* Job Results */}
       <div className="grid gap-6">
-        {jobs.map((job) => (
-          <div
-            key={job.id}
-            className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">{job.title}</h2>
-                <p className="text-gray-600 mb-2">{job.company}</p>
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                  <span>📍 {job.location}</span>
-                  <span>💼 {job.type}</span>
-                  <span>⏰ {job.posted}</span>
-                </div>
-                <div className="text-lg font-medium text-green-600">{job.salary}</div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button variant="default">Save</Button>
-                <Button variant="secondary">Apply</Button>
-              </div>
-            </div>
-          </div>
-        ))}
+        <JobCard></JobCard>
+        <JobCard></JobCard>
+        <JobCard></JobCard>
+        <JobCard></JobCard>
       </div>
-
       {/* Results Info */}
       <div className="mt-8 text-center text-gray-600">Showing {jobs.length} jobs</div>
     </div>
