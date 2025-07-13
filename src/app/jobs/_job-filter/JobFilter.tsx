@@ -1,4 +1,5 @@
 import { SelectField } from '@/components/common/SelectField'
+import { Stack } from '@/components/ui/stack'
 
 import { filterConfig, FilterKey } from './filterConfig'
 
@@ -9,7 +10,7 @@ interface JobFiltersProps {
 
 export function JobFilter({ ...props }: JobFiltersProps) {
   return (
-    <div className="flex gap-4 mb-6">
+    <Stack className="mb-6">
       {filterConfig.map((filter) => (
         <SelectField
           key={filter.key}
@@ -19,6 +20,6 @@ export function JobFilter({ ...props }: JobFiltersProps) {
           value={props.filters[filter.key]}
         />
       ))}
-    </div>
+    </Stack>
   )
 }

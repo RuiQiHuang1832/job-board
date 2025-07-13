@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 
+import { Input } from '@/components/ui/input'
 import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
 
-import { Input } from '../ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 interface AutocompleteSearchProps {
   options: { id: string; label: string; value: string }[]
@@ -24,14 +24,10 @@ export function AutocompleteSearch({
   const [inputValue, setInputValue] = useState('')
   const [open, setOpen] = useState(false)
 
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(inputValue.toLowerCase()),
-  )
-
   const { selectedIndex, handleKeyDown, resetSelection } = useKeyboardNavigation({
-    itemCount: filteredOptions.length,
+    itemCount: options.length,
     onSelect: (index) => {
-      selectOption(filteredOptions[index])
+      selectOption(options[index])
     },
   })
 
@@ -39,7 +35,7 @@ export function AutocompleteSearch({
   useEffect(() => {
     resetSelection()
     console.log('Input value changed, resetting selection')
-  }, [filteredOptions.length, resetSelection])
+  }, [options.length, resetSelection])
 
   const selectOption = (option: { label: string; value: string }) => {
     setInputValue(option.label)
@@ -64,10 +60,10 @@ export function AutocompleteSearch({
           onKeyDown={handleKeyDown}
         />
       </PopoverTrigger>
-      {filteredOptions.length > 0 && (
+      {options.length > 0 && (
         <PopoverContent align="start" onOpenAutoFocus={(e) => e.preventDefault()}>
           <ul className="space-y-1">
-            {filteredOptions.map((option, index) => (
+            {options.map((option, index) => (
               <li key={option.id}>
                 <button
                   type="button"

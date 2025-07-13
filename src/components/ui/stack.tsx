@@ -5,9 +5,26 @@ import { cn } from '@/lib/utils'
 interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   direction?: 'row' | 'col'
   gap?: keyof typeof gapMap
-  align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline'
-  justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'
+  align?: keyof typeof alignMap
+  justify?: keyof typeof justifyMap
 }
+
+const justifyMap = {
+  start: 'justify-start',
+  center: 'justify-center',
+  end: 'justify-end',
+  between: 'justify-between',
+  around: 'justify-around',
+  evenly: 'justify-evenly',
+} as const
+
+const alignMap = {
+  start: 'items-start',
+  center: 'items-center',
+  end: 'items-end',
+  stretch: 'items-stretch',
+  baseline: 'items-baseline',
+} as const
 
 const gapMap = {
   0: 'gap-0',
@@ -22,12 +39,12 @@ const gapMap = {
   12: 'gap-12',
   16: 'gap-16',
   20: 'gap-20',
-}
+} as const
 
 function Stack({
   direction = 'row',
   gap = 4,
-  align,
+  align = 'center',
   justify,
   className,
   children,
@@ -39,8 +56,8 @@ function Stack({
         'flex',
         direction === 'col' ? 'flex-col' : 'flex-row',
         gapMap[gap],
-        align && `items-${align}`,
-        justify && `justify-${justify}`,
+        alignMap[align],
+        justify && justifyMap[justify],
         className,
       )}
       {...props}
