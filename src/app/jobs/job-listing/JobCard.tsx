@@ -1,4 +1,4 @@
-import Avatar from '@/app/jobs/CompanyAvatar'
+import { CompanyAvatar as Avatar, BaseJobProps } from '@/app/jobs'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -11,42 +11,24 @@ import {
 import { Stack } from '@/components/ui/stack'
 import { Tag } from '@/components/ui/tag'
 
-interface JobCardProps {
-  title: string
-  company: string
-  daysPosted: number
-  location: string
-  pay: string
-  tags: ReadonlyArray<string>
-  description: string
-}
-
-export default function JobCard({
-  title,
-  company,
-  daysPosted,
-  location,
-  pay,
-  tags,
-  description,
-}: JobCardProps) {
+export default function JobCard(props: BaseJobProps) {
   return (
     <Card className="gap-3 hover:shadow-md transition-shadow">
       <CardHeader>
         <CardTitle>
           <Stack gap={3}>
-            <Avatar name={company} />
+            <Avatar name={props.company} />
             <div>
               <Stack align="baseline">
-                <div className="text-2xl text-primary">{title}</div>
-                <div className="text-gray-400 font-light text-sm">{daysPosted} days ago</div>
+                <div className="text-xl text-primary">{props.title}</div>
+                <div className="text-gray-400 font-light text-sm">{props.daysPosted} days ago</div>
               </Stack>
-              <div className="text-muted-foreground text-sm">{company}</div>
+              <div className="text-muted-foreground text-sm">{props.company}</div>
             </div>
           </Stack>
         </CardTitle>
         <CardDescription className="text-gray-500 mt-2 text-sm">
-          {location} · {pay}
+          {props.location} · {props.pay}
         </CardDescription>
         <CardAction className="space-x-2">
           <Button variant="default">Save</Button>
@@ -55,11 +37,11 @@ export default function JobCard({
       </CardHeader>
       <CardContent className="space-y-3">
         <Stack gap={2} className="flex">
-          {tags.map((tag, index) => (
+          {props.tags.map((tag, index) => (
             <Tag key={index}>{tag}</Tag>
           ))}
         </Stack>
-        <p className="line-clamp-2">{description}</p>
+        <p className="line-clamp-2">{props.description}</p>
       </CardContent>
     </Card>
   )

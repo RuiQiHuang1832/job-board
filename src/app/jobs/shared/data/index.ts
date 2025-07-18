@@ -1,0 +1,1 @@
+export { jobListings } from './listings';

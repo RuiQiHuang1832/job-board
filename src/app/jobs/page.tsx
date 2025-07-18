@@ -1,17 +1,18 @@
 'use client'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 
-import JobSidebar from '@/app/jobs/JobSidebar'
-import { jobListings } from '@/app/jobs/listings'
+import {
+  JobCard,
+  JobFilter,
+  JobSidebar,
+  LocationSearch,
+  jobListings,
+  useJobFilters,
+} from '@/app/jobs'
 import IconInput from '@/components/common/IconInput'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
-
-import { JobFilter } from './_job-filter/JobFilter'
-import { useJobFilters } from './_job-filter/useJobFilters'
-import JobCard from './JobCard'
-import { LocationSearch } from './LocationSearch'
 export default function JobsPage() {
   const { filters, updateFilter } = useJobFilters()
 
@@ -49,19 +50,10 @@ export default function JobsPage() {
       <Stack align="start" className="gap-x-6">
         <div className={`grid gap-6 w-xl `}>
           {jobListings.map((job, index) => (
-            <JobCard
-              key={index}
-              title={job.title}
-              company={job.company}
-              daysPosted={job.daysPosted}
-              location={job.location}
-              pay={job.pay}
-              tags={job.tags}
-              description={job.description}
-            />
+            <JobCard key={index} {...job} />
           ))}
         </div>
-        <JobSidebar />
+        <JobSidebar {...jobListings[0]} />
       </Stack>
     </div>
   )

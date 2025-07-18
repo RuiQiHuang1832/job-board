@@ -88,7 +88,7 @@ export function LocationSearch() {
   return (
     <AutocompleteSearch
       options={locations}
-      placeholder={`Enter location or "remote"`}
+      placeholder="Enter location or 'remote'"
       onInputChange={handleInputChange}
       inputClassName="pl-10"
       size="lg"
