@@ -1,10 +1,11 @@
 export const jobListings = [
   {
+    id:0,
     title: 'Senior UX Designer',
     company: 'Dribbble',
     daysPosted: 2,
     location: 'San Francisco, CA',
-    pay: '$46k–$75k',
+    pay: '$46,000–$75,000',
     tags: ['Remote', 'Dental Insurance'],
     description: `Meta is seeking a Product Operations Manager to join the Product Operations team. Our mission is to be the experts on functional quality to improve how product teams resolve user issues. Our vision is that every user interaction should work well. Those who join our team are passionate about solving user issues and are advocates for the Meta community.
 
@@ -37,11 +38,12 @@ Our mission is to bring the world closer together through product innovation and
     onsite: true,
   },
   {
+    id: 1,
     title: 'Frontend Engineer',
     company: 'Gigma',
     daysPosted: 5,
     location: 'San Francisco, CA',
-    pay: '$110k–$140k',
+    pay: '$110,000–$140,000',
     tags: ['Remote', 'Full Time', 'React'],
     description: `We’re looking for a Frontend Engineer to help us evolve our design systems and build accessible, performant interfaces that scale across our products. You’ll join a fast-moving team that deeply values design, quality, and performance.
 
@@ -63,11 +65,12 @@ From design systems to developer analytics, our mission is to streamline product
     onsite: true,
   },
   {
+    id: 2,
     title: 'Product Manager',
     company: 'Notion',
     daysPosted: 1,
     location: 'San Francisco, CA',
-    pay: '$125k–$165k',
+    pay: '$125,000–$165,000',
     tags: ['Full Time'],
     description: `As a Product Manager at Notion, you’ll own the roadmap for a core area of our platform, shaping how millions of users collaborate and create every day. We believe great products emerge from deep empathy, fast iteration, and strong cross-functional collaboration.
 
@@ -89,11 +92,12 @@ Used by teams and individuals worldwide, Notion is redefining how people get thi
     onsite: true,
   },
   {
+    id: 3,
     title: 'Mobile App Developer',
     company: 'Calm',
     daysPosted: 3,
     location: 'San Francisco, CA',
-    pay: '$90k–$120k',
+    pay: '$90,000–$120,000',
     tags: ['Remote', 'iOS', 'Swift', 'Mental Health Perks'],
     description: `We’re hiring an iOS engineer to help bring Calm’s mental wellness experiences to life. As part of our Mobile Team, you’ll contribute directly to features that help users sleep better, reduce stress, and improve their mental clarity.
 
@@ -115,11 +119,12 @@ Our vision is to make the world happier and healthier—one session at a time.
     onsite: false,
   },
   {
+    id: 4,
     title: 'Content Designer',
     company: 'Pinterest',
     daysPosted: 6,
     location: 'San Francisco, CA',
-    pay: '$78k–$100k',
+    pay: '$78,000–$100,000',
     tags: ['Full Time', 'UX Writing'],
     description: `Pinterest is looking for a thoughtful, user-first content designer to help shape clear, useful product experiences through words. You’ll write content that helps users confidently explore, discover, and act on inspiration.
 
@@ -141,11 +146,12 @@ Our team thrives on creativity, user empathy, and turning pixels into purpose.
     onsite: false,
   },
   {
+    id: 5,
     title: 'Full Stack Developer',
     company: 'Airbnb',
     daysPosted: 4,
     location: 'San Francisco, CA',
-    pay: '$130k–$160k',
+    pay: '$130,000–$160,000',
     tags: ['Remote', 'Full Stack', 'Node.js', 'Equity'],
     description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
 

@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import { GrGroup } from 'react-icons/gr'
@@ -9,7 +9,7 @@ import { IoMdInformationCircleOutline } from 'react-icons/io'
 import { LiaMoneyBillWaveSolid } from 'react-icons/lia'
 import { TbCoins } from 'react-icons/tb'
 
-import { CompanyAvatar as Avatar, DetailedJobProps } from '@/app/jobs'
+import { CompanyAvatar as Avatar, DetailedJobProps } from '@/app/jobs/shared'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -26,7 +26,13 @@ import styles from './JobSidebar.module.css'
 
 export default function JobSidebar(props: DetailedJobProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-
+  const companyMetadata: Array<{ icon: React.ComponentType; value: string | number | undefined }> =
+    [
+      { icon: HiOutlineBuildingOffice2, value: props.location },
+      { icon: GrGroup, value: props.employeeCount },
+      { icon: IoMdInformationCircleOutline, value: props.private ? 'Private' : 'Public' },
+      { icon: TbCoins, value: props.valuation },
+    ] as const
   return (
     <Card className="w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 ">
       <CardHeader>
@@ -37,10 +43,10 @@ export default function JobSidebar(props: DetailedJobProps) {
         </CardDescription>
         <CardDescription className="text-emerald-600 font-semibold">
           <Stack gap={2} className="text-base">
-            <LiaMoneyBillWaveSolid size="20px"></LiaMoneyBillWaveSolid>$46,000 - $75,000
+            <LiaMoneyBillWaveSolid size="20px"></LiaMoneyBillWaveSolid>
+            {props.pay}
           </Stack>
         </CardDescription>
-
         <CardAction>
           <Button variant="default">
             <FaExternalLinkAlt></FaExternalLinkAlt>Apply Now
@@ -58,6 +64,7 @@ export default function JobSidebar(props: DetailedJobProps) {
             size="lg"
             variant="secondary"
             onClick={() => setIsExpanded(!isExpanded)}
+            aria-label={isExpanded ? 'Show less job description' : 'Show more job description'}
           >
             {isExpanded ? <FiMinus /> : <FiPlus />} Show {isExpanded ? 'Less' : 'More'}
           </Button>
@@ -67,35 +74,29 @@ export default function JobSidebar(props: DetailedJobProps) {
           <Stack gap={3}>
             <Avatar name={props.company} />
             <Stack gap={0} align="start" direction="col">
-              <div className="text-xl text-primary font-semibold">{props.company}</div>
+              <h4 className="text-primary">{props.company}</h4>
               <Stack gap={2} className="text-sm text-blue-600 ">
                 <Stack gap={1}>
                   <FaExternalLinkAlt />
                   <Link href="/">Website</Link>
-                </Stack>{' '}
-                · <Link href="/">Overview</Link> · <Link href="/">Salaries</Link> ·{' '}
-                <Link href="/">Benefits</Link>
+                </Stack>
+                {['Overview', 'Salaries', 'Benefits'].map((label) => (
+                  <Fragment key={label}>
+                    {' · '}
+                    <Link href="/">{label}</Link>
+                  </Fragment>
+                ))}
               </Stack>
             </Stack>
           </Stack>
           <p>{props.companyDescription}</p>
           <Stack gap={4}>
-            <Stack gap={1}>
-              <HiOutlineBuildingOffice2></HiOutlineBuildingOffice2>
-              {props.location}
-            </Stack>
-            <Stack gap={1}>
-              <GrGroup></GrGroup>
-              {props.employeeCount}
-            </Stack>
-            <Stack gap={1}>
-              <IoMdInformationCircleOutline></IoMdInformationCircleOutline>
-              {props.private ? 'Private' : 'Public'}
-            </Stack>
-            <Stack gap={1}>
-              <TbCoins></TbCoins>
-              {props.valuation}
-            </Stack>
+            {companyMetadata.map((item, index) => (
+              <Stack gap={1} key={index}>
+                <item.icon />
+                {item.value}
+              </Stack>
+            ))}
           </Stack>
         </Stack>
       </CardContent>

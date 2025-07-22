@@ -1,20 +1,24 @@
 'use client'
+import { useState } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 
-import {
-  JobCard,
-  JobFilter,
-  JobSidebar,
-  LocationSearch,
-  jobListings,
-  useJobFilters,
-} from '@/app/jobs'
+import { JobSidebar } from '@/app/jobs/job-details'
+import { JobFilter, useJobFilters } from '@/app/jobs/job-filter'
+import { JobCard } from '@/app/jobs/job-listing'
+import { LocationSearch, jobListings } from '@/app/jobs/shared'
 import IconInput from '@/components/common/IconInput'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
+
 export default function JobsPage() {
   const { filters, updateFilter } = useJobFilters()
+  const [activeJobId, setActiveJobId] = useState<number>(jobListings[0]?.id || 0)
+  const activeJob = jobListings.find((job) => job.id === activeJobId) || jobListings[0]
+
+  const handleActiveJobCard = (id: number) => {
+    setActiveJobId(id)
+  }
 
   return (
     <div className="max-w-[90rem] mx-auto p-8">
@@ -50,10 +54,10 @@ export default function JobsPage() {
       <Stack align="start" className="gap-x-6">
         <div className={`grid gap-6 w-xl `}>
           {jobListings.map((job, index) => (
-            <JobCard key={index} {...job} />
+            <JobCard isSelected={activeJobId === job.id} onJobClick={handleActiveJobCard} key={index} {...job} />
           ))}
         </div>
-        <JobSidebar {...jobListings[0]} />
+        <JobSidebar {...activeJob} />
       </Stack>
     </div>
   )
