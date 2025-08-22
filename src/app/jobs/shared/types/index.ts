@@ -1,1 +1,1 @@
-export type { BaseJobProps, DetailedJobProps } from './types'
+export type { BaseJobProps, DetailedJobProps, DetailedJobWithUIState, SearchResult } from './types'

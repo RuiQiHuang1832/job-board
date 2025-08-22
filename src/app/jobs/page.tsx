@@ -1,31 +1,75 @@
 'use client'
-import { useState } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
+import { BsFillSignpost2Fill } from 'react-icons/bs'
+import { FaSortAmountDown } from 'react-icons/fa'
 
-import { JobSidebar } from '@/app/jobs/job-details'
-import { JobFilter, useJobFilters } from '@/app/jobs/job-filter'
+import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
+import { JobFilter } from '@/app/jobs/job-filter'
 import { JobCard } from '@/app/jobs/job-listing'
-import { LocationSearch, jobListings } from '@/app/jobs/shared'
+import {
+  DetailedJobProps,
+  LocationSearch,
+  SortOrder,
+  jobListings,
+  radioFormOptions,
+} from '@/app/jobs/shared'
 import IconInput from '@/components/common/IconInput'
+import MenuDropdown from '@/components/common/MenuDropdown'
+import { RadioForm } from '@/components/common/RadioForm'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
 
+import { useJobOperations, useJobSearch } from './hooks'
+
 export default function JobsPage() {
-  const { filters, updateFilter } = useJobFilters()
-  const [activeJobId, setActiveJobId] = useState<number>(jobListings[0]?.id || 0)
-  const activeJob = jobListings.find((job) => job.id === activeJobId) || jobListings[0]
+  const {
+    savedJobs,
+    hiddenJobs,
+    handleJobSave,
+    handleJobHide,
+    handleActiveJobCard,
+    activeJobId,
+    isLoading,
+  } = useJobOperations([...jobListings])
+  const {
+    searchIDs,
+    sortOrder,
+    searchInputRef,
+    handleSearch,
+    displayedJobs,
+    updateFilter,
+    setSortOrder,
+  } = useJobSearch([...jobListings])
 
-  const handleActiveJobCard = (id: number) => {
-    setActiveJobId(id)
-  }
+  const activeJob =
+    displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
+  // const handleJobDelete = (delete_id: number) => {
+  //   setJobs((prevJobs) => {
+  //     const filteredJobs = prevJobs.filter((job) => job.id !== delete_id)
+  //     if (activeJobId === delete_id) {
+  //       if (filteredJobs.length > 0) {
+  //         setActiveJobId(filteredJobs[0].id)
+  //       } else {
+  //         setActiveJobId(0) // No jobs left
+  //       }
+  //     }
+
+  //     return filteredJobs
+  //   })
+  // }
   return (
     <div className="max-w-[90rem] mx-auto p-8">
       {/* Search Section */}
       <div className="mb-8">
-        <h1 className="mb-6">Find Your Next Job</h1>
-
+        <Stack className="mb-6" justify="between" align="center">
+          <h1 className="">Find Your Next Job</h1>
+          <Button variant="outline">
+            <BsFillSignpost2Fill />
+            Post or Promote a Job
+          </Button>
+        </Stack>
         <Stack className="mb-4">
           <div className="flex-1/2">
             <IconInput icon={AiOutlineSearch}>
@@ -34,6 +78,7 @@ export default function JobsPage() {
                 type="text"
                 size="lg"
                 placeholder="Search jobs, keywords, company"
+                ref={searchInputRef}
               />
             </IconInput>
           </div>
@@ -42,22 +87,77 @@ export default function JobsPage() {
               <LocationSearch />
             </IconInput>
           </div>
-          <Button className="" variant="default" size="lg">
+          <Button onClick={handleSearch} variant="default" size="lg">
             Search
           </Button>
         </Stack>
       </div>
       {/* Filters */}
-      <JobFilter updateFilter={updateFilter} filters={filters} />
-      <h3 className="mb-8">Now Hiring</h3>
+      <JobFilter updateFilter={updateFilter} />
       {/* Job Results */}
+
       <Stack align="start" className="gap-x-6">
         <div className={`grid gap-6 w-xl `}>
-          {jobListings.map((job, index) => (
-            <JobCard isSelected={activeJobId === job.id} onJobClick={handleActiveJobCard} key={index} {...job} />
-          ))}
+          <Stack className="text-gray-500 text-sm" justify="between">
+            <div>{displayedJobs.length} companies hiring</div>
+            <Stack gap={2}>
+              <div>73,600 total jobs</div>
+              <MenuDropdown
+                disabled={searchIDs.length === 0}
+                trigger={<FaSortAmountDown />}
+                content={
+                  <RadioForm
+                    onValueChange={(value) => setSortOrder(value as SortOrder)}
+                    items={radioFormOptions}
+                    defaultValue="relevance"
+                    title="Sort by"
+                    order={sortOrder}
+                  />
+                }
+                align="end"
+              ></MenuDropdown>
+            </Stack>
+          </Stack>
+          {displayedJobs.map((jobDetails) =>
+            hiddenJobs.has(jobDetails.id) ? (
+              <Stack
+                key={jobDetails.id}
+                className="p-4 bg-gray-100 border border-gray-200 rounded-lg"
+                direction="col"
+                gap={0}
+              >
+                <p>Job hidden</p>
+                <p className="text-sm">
+                  {jobDetails.title} at {jobDetails.company}
+                </p>
+                <Button
+                  variant="link"
+                  className="ms-auto"
+                  onClick={() => handleJobHide(jobDetails.id)}
+                >
+                  Undo
+                </Button>
+              </Stack>
+            ) : (
+              <JobCard
+                isSelected={activeJobId === jobDetails.id}
+                onJobClick={handleActiveJobCard}
+                key={jobDetails.id}
+                {...jobDetails}
+                onJobHide={handleJobHide}
+                onJobSave={handleJobSave}
+                saved={savedJobs.has(jobDetails.id)}
+              />
+            ),
+          )}
         </div>
-        <JobSidebar {...activeJob} />
+        {isLoading ? (
+          <JobSidebarSkeleton />
+        ) : activeJob ? (
+          <JobSidebar {...activeJob} isHidden={hiddenJobs.has(activeJob.id)} />
+        ) : (
+          ''
+        )}
       </Stack>
     </div>
   )

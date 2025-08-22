@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { Fragment, useState } from 'react'
-import { FaExternalLinkAlt } from 'react-icons/fa'
+import { FaExternalLinkAlt, FaEyeSlash } from 'react-icons/fa'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import { GrGroup } from 'react-icons/gr'
 import { HiOutlineBuildingOffice2 } from 'react-icons/hi2'
@@ -9,7 +9,7 @@ import { IoMdInformationCircleOutline } from 'react-icons/io'
 import { LiaMoneyBillWaveSolid } from 'react-icons/lia'
 import { TbCoins } from 'react-icons/tb'
 
-import { CompanyAvatar as Avatar, DetailedJobProps } from '@/app/jobs/shared'
+import { CompanyAvatar as Avatar, DetailedJobWithUIState } from '@/app/jobs/shared'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -24,8 +24,9 @@ import { cn } from '@/lib/utils'
 
 import styles from './JobSidebar.module.css'
 
-export default function JobSidebar(props: DetailedJobProps) {
+export default function JobSidebar(props: DetailedJobWithUIState) {
   const [isExpanded, setIsExpanded] = useState(false)
+
   const companyMetadata: Array<{ icon: React.ComponentType; value: string | number | undefined }> =
     [
       { icon: HiOutlineBuildingOffice2, value: props.location },
@@ -33,6 +34,7 @@ export default function JobSidebar(props: DetailedJobProps) {
       { icon: IoMdInformationCircleOutline, value: props.private ? 'Private' : 'Public' },
       { icon: TbCoins, value: props.valuation },
     ] as const
+
   return (
     <Card className="w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 ">
       <CardHeader>
@@ -49,7 +51,15 @@ export default function JobSidebar(props: DetailedJobProps) {
         </CardDescription>
         <CardAction>
           <Button variant="default">
-            <FaExternalLinkAlt></FaExternalLinkAlt>Apply Now
+            {props.isHidden ? (
+              <>
+                <FaEyeSlash></FaEyeSlash>Hidden
+              </>
+            ) : (
+              <>
+                <FaExternalLinkAlt></FaExternalLinkAlt>Apply Now
+              </>
+            )}
           </Button>
         </CardAction>
       </CardHeader>

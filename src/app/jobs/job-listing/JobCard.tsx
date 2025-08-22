@@ -1,5 +1,9 @@
 'use client'
 
+import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
+import { IoClose } from 'react-icons/io5'
+import { MdLocationPin } from 'react-icons/md'
+
 import { CompanyAvatar as Avatar, BaseJobProps } from '@/app/jobs/shared'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,19 +20,33 @@ import { cn } from '@/lib/utils'
 
 interface JobCardProps extends BaseJobProps {
   isSelected: boolean
+  saved: boolean
   onJobClick: (id: number) => void
+  onJobHide: (id: number) => void
+  onJobSave: (id: number) => void
 }
 
 export default function JobCard(props: JobCardProps) {
-  const handleClick = () => {
+  const handleCardClick = () => {
     props.onJobClick?.(props.id)
   }
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    props.onJobSave?.(props.id)
+  }
+
+  const handleCloseClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    props.onJobHide?.(props.id)
+  }
+
   return (
     <Card
-      onClick={handleClick}
+      onClick={handleCardClick}
       className={cn(
-        'gap-3 transition-all duration-150 ease-in-out cursor-pointer hover:border-blue-500 hover:bg-blue-50',
-        props.isSelected && 'border-blue-500 bg-blue-50',
+        'gap-3 transition-shadow hover:shadow-md cursor-pointer group',
+        props.isSelected && 'border-blue-500 ',
       )}
     >
       <CardHeader>
@@ -37,7 +55,9 @@ export default function JobCard(props: JobCardProps) {
             <Avatar name={props.company} />
             <div>
               <Stack align="baseline">
-                <h4 className="text-primary">{props.title}</h4>
+                <h4 className="text-primary font-bold group-hover:underline group-hover:decoration-[1px]">
+                  {props.title}
+                </h4>
                 <div className="text-gray-400 font-light text-sm">{props.daysPosted} days ago</div>
               </Stack>
               <div className="text-muted-foreground text-sm">{props.company}</div>
@@ -45,11 +65,35 @@ export default function JobCard(props: JobCardProps) {
           </Stack>
         </CardTitle>
         <CardDescription className="text-gray-500 mt-2 text-sm">
-          {props.location} · {formatRangeToK(props.pay)}
+          <Stack gap={1}>
+            <MdLocationPin size="15px" />
+            {props.location} · {formatRangeToK(props.pay)}
+          </Stack>
         </CardDescription>
-        <CardAction className="space-x-2">
-          <Button variant="default">Save</Button>
-          <Button variant="secondary">Apply</Button>
+        <CardAction className="w-full">
+          <Stack direction="col">
+            <Button
+              onClick={handleBookmarkClick}
+              variant="ghost"
+              className="!px-2"
+              title="Save this job"
+              aria-label={props.saved ? 'Remove from saved jobs' : 'Save this job'}
+            >
+              {props.saved ? (
+                <BsBookmarkFill className="size-[1.4rem]" />
+              ) : (
+                <BsBookmark className="size-[1.4rem]" />
+              )}
+            </Button>
+            <Button
+              onClick={handleCloseClick}
+              variant="ghost"
+              className="!px-2"
+              title="Hide this job"
+            >
+              <IoClose className="size-[1.5rem]" />
+            </Button>
+          </Stack>
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -72,5 +116,5 @@ function formatRangeToK(input: string): string {
   const start = Math.round(parseInt(startStr.replace(/,/g, '')) / 1000)
   const end = Math.round(parseInt(endStr.replace(/,/g, '')) / 1000)
 
-  return `${start}k-${end}k`
+  return `$${start}k-$${end}k`
 }

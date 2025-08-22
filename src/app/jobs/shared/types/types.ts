@@ -7,7 +7,8 @@ export interface BaseJobProps {
   pay: string
   tags: ReadonlyArray<string>
   description: string
-
+  education: string
+  jobType: string
 }
 
 export interface DetailedJobProps extends BaseJobProps {
@@ -17,3 +18,16 @@ export interface DetailedJobProps extends BaseJobProps {
   valuation?: string
   onsite: boolean
 }
+
+interface JobUIState {
+  isHidden: boolean
+}
+
+export interface SearchResult {
+  id: number
+  score: number
+  pay: number
+  daysPosted: number
+}
+
+export type DetailedJobWithUIState = DetailedJobProps & JobUIState
