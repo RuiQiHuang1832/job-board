@@ -1,6 +1,6 @@
 export const jobListings = [
   {
-    id: 0,
+    id: '0',
     title: 'Senior UX Designer',
     company: 'Dribbble',
     daysPosted: 2,
@@ -40,11 +40,11 @@ Our mission is to bring the world closer together through product innovation and
     onsite: true,
   },
   {
-    id: 1,
+    id: '1',
     title: 'Frontend Engineer',
     company: 'Gigma',
     daysPosted: 5,
-    location: 'San Francisco, CA',
+    location: 'Oakland, CA',
     pay: '$110,000–$140,000',
     tags: ['Remote', 'Full Time', 'React'],
     jobType: 'Full-time',
@@ -69,7 +69,7 @@ From design systems to developer analytics, our mission is to streamline product
     onsite: true,
   },
   {
-    id: 2,
+    id: '2',
     title: 'Product Manager',
     company: 'Notion',
     daysPosted: 31,
@@ -98,7 +98,7 @@ Used by teams and individuals worldwide, Notion is redefining how people get thi
     onsite: true,
   },
   {
-    id: 3,
+    id: '3',
     title: 'Mobile App Developer',
     company: 'Calm',
     daysPosted: 15,
@@ -127,7 +127,7 @@ Our vision is to make the world happier and healthier—one session at a time.
     onsite: false,
   },
   {
-    id: 4,
+    id: '4',
     title: 'Content Designer',
     company: 'Pinterest',
     daysPosted: 14,
@@ -156,7 +156,7 @@ Our team thrives on creativity, user empathy, and turning pixels into purpose.
     onsite: false,
   },
   {
-    id: 5,
+    id: '5',
     title: 'Full Stack Developer',
     company: 'Airbnb',
     daysPosted: 40,

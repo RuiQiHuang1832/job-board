@@ -14,7 +14,7 @@ const weight = {
   description: 1,
 } as const
 
-export function search(jobs: DetailedJobProps[], query: string): SearchResult[] {
+export function search(jobs: DetailedJobProps[], query: string, location: string): SearchResult[] {
   // Normalize query
   const q = normalize(query || '')
   // Tokenize query
@@ -55,9 +55,17 @@ export function search(jobs: DetailedJobProps[], query: string): SearchResult[] 
         if (f.tags.includes(t)) score += weight.tags
         if (f.description.includes(t)) score += weight.description
       }
-      rows.push({ id: job.id, score, pay:job.pay ? parseInt(job.pay.split('–')[0].replace(/[$,]/g, '')) : 0, daysPosted: job.daysPosted })
+      // Only add to results if location matches (or no location filter)
+      const locationMatches = !location || job.location === location
+      if (locationMatches) {
+        rows.push({
+          id: job.id,
+          score,
+          pay: job.pay ? parseInt(job.pay.split('–')[0].replace(/[$,]/g, '')) : 0,
+          daysPosted: job.daysPosted,
+        })
+      }
     }
   }
-
   return rows
 }

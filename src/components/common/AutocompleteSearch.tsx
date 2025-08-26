@@ -6,22 +6,28 @@ import { Input } from '@/components/ui/input'
 import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
 
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+
+type optionsType = { id: string; label: string; value: string }
 interface AutocompleteSearchProps {
-  options: { id: string; label: string; value: string }[]
+  options: optionsType[]
   placeholder?: string
   onInputChange?: (value: string) => void
+  onSelect?: (selectedOption: optionsType) => void
   inputClassName?: string
   size: 'sm' | 'md' | 'lg'
+  initialValue: string
 }
 
 export function AutocompleteSearch({
   options,
   placeholder,
   onInputChange,
+  onSelect,
   inputClassName,
   size,
+  initialValue
 }: AutocompleteSearchProps) {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(initialValue)
   const [open, setOpen] = useState(false)
 
   const { selectedIndex, handleKeyDown, resetSelection } = useKeyboardNavigation({
@@ -34,11 +40,11 @@ export function AutocompleteSearch({
   // Reset selected index when filtered options change
   useEffect(() => {
     resetSelection()
-    console.log('Input value changed, resetting selection')
   }, [options.length, resetSelection])
 
-  const selectOption = (option: { label: string; value: string }) => {
+  const selectOption = (option: optionsType) => {
     setInputValue(option.label)
+    onSelect?.(option)
     setOpen(false)
   }
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +52,7 @@ export function AutocompleteSearch({
     setOpen(true)
     onInputChange?.(e.target.value)
   }
+  // Update input when value prop changes (on re-render)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

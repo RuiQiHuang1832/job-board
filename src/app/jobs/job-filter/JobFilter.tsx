@@ -1,3 +1,4 @@
+'use client'
 import { SelectField } from '@/components/common/SelectField'
 import { Stack } from '@/components/ui/stack'
 
@@ -5,6 +6,7 @@ import { filterConfig, FilterKey } from './filterConfig'
 
 interface JobFiltersProps {
   updateFilter: (key: FilterKey, value: string) => void
+  initialState: Record<FilterKey, string>
 }
 
 export function JobFilter({ ...props }: JobFiltersProps) {
@@ -13,9 +15,14 @@ export function JobFilter({ ...props }: JobFiltersProps) {
       {filterConfig.map((filter) => (
         <SelectField
           key={filter.key}
-          options={filter.options.slice()}
+          options={[...filter.options]}
           placeholder={filter.placeholder}
           onValueChange={(value) => props.updateFilter(filter.key, value)}
+          value={props.initialState[filter.key]}
+          initialStaticLabel={
+            filter.options.find((option) => option.value === props.initialState[filter.key])
+              ?.label || filter.placeholder
+          }
         />
       ))}
     </Stack>

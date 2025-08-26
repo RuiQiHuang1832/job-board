@@ -6,13 +6,8 @@ import { FaSortAmountDown } from 'react-icons/fa'
 import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
 import { JobFilter } from '@/app/jobs/job-filter'
 import { JobCard } from '@/app/jobs/job-listing'
-import {
-  DetailedJobProps,
-  LocationSearch,
-  SortOrder,
-  jobListings,
-  radioFormOptions,
-} from '@/app/jobs/shared'
+import { LocationSearch } from '@/app/jobs/search'
+import { DetailedJobProps, SortOrder, jobListings, radioFormOptions } from '@/app/jobs/shared'
 import IconInput from '@/components/common/IconInput'
 import MenuDropdown from '@/components/common/MenuDropdown'
 import { RadioForm } from '@/components/common/RadioForm'
@@ -26,39 +21,30 @@ export default function JobsPage() {
   const {
     savedJobs,
     hiddenJobs,
+    activeJobId,
+    isLoading,
     handleJobSave,
     handleJobHide,
     handleActiveJobCard,
-    activeJobId,
-    isLoading,
   } = useJobOperations([...jobListings])
   const {
     searchIDs,
     sortOrder,
     searchInputRef,
-    handleSearch,
+    locationSearchRef,
     displayedJobs,
-    updateFilter,
-    setSortOrder,
+    initialSearchValue,
+    initialLocationValue,
+    initialFilterState,
+    initialSortValue,
+    handleSearch,
+    handleSortChange,
+    handleFilterChange,
   } = useJobSearch([...jobListings])
 
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
-  // const handleJobDelete = (delete_id: number) => {
-  //   setJobs((prevJobs) => {
-  //     const filteredJobs = prevJobs.filter((job) => job.id !== delete_id)
-  //     if (activeJobId === delete_id) {
-  //       if (filteredJobs.length > 0) {
-  //         setActiveJobId(filteredJobs[0].id)
-  //       } else {
-  //         setActiveJobId(0) // No jobs left
-  //       }
-  //     }
-
-  //     return filteredJobs
-  //   })
-  // }
   return (
     <div className="max-w-[90rem] mx-auto p-8">
       {/* Search Section */}
@@ -79,12 +65,18 @@ export default function JobsPage() {
                 size="lg"
                 placeholder="Search jobs, keywords, company"
                 ref={searchInputRef}
+                defaultValue={initialSearchValue}
               />
             </IconInput>
           </div>
           <div className="flex-3">
             <IconInput icon={AiOutlineEnvironment}>
-              <LocationSearch />
+              <LocationSearch
+                onLocationSelect={(selectedLocation) => {
+                  locationSearchRef.current = selectedLocation
+                }}
+                initialValue={initialLocationValue}
+              />
             </IconInput>
           </div>
           <Button onClick={handleSearch} variant="default" size="lg">
@@ -93,13 +85,16 @@ export default function JobsPage() {
         </Stack>
       </div>
       {/* Filters */}
-      <JobFilter updateFilter={updateFilter} />
+      <JobFilter updateFilter={handleFilterChange} initialState={initialFilterState} />
       {/* Job Results */}
 
       <Stack align="start" className="gap-x-6">
         <div className={`grid gap-6 w-xl `}>
           <Stack className="text-gray-500 text-sm" justify="between">
-            <div>{displayedJobs.length} companies hiring</div>
+            <div>
+              {displayedJobs.length} companies hiring{' '}
+              {locationSearchRef.current ? `in ${locationSearchRef.current}` : 'near you'}
+            </div>
             <Stack gap={2}>
               <div>73,600 total jobs</div>
               <MenuDropdown
@@ -107,9 +102,9 @@ export default function JobsPage() {
                 trigger={<FaSortAmountDown />}
                 content={
                   <RadioForm
-                    onValueChange={(value) => setSortOrder(value as SortOrder)}
+                    onValueChange={(value) => handleSortChange(value as SortOrder)}
                     items={radioFormOptions}
-                    defaultValue="relevance"
+                    defaultValue={initialSortValue}
                     title="Sort by"
                     order={sortOrder}
                   />

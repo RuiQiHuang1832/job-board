@@ -1,3 +1,6 @@
+'use client'
+import { useEffect, useState } from 'react'
+
 import {
   Select,
   SelectContent,
@@ -5,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-
 interface SelectOption {
   value: string
   label: string
@@ -15,21 +17,30 @@ interface SelectFieldProps {
   options: SelectOption[]
   placeholder: string
   onValueChange: (value: string) => void
-  value?: string
   className?: string
+  value?: string
+  initialStaticLabel?: string
 }
 
 export function SelectField({
   options,
   placeholder,
   onValueChange,
-  value,
   className,
+  value = 'Default Value',
+  initialStaticLabel = 'Default Label',
 }: SelectFieldProps) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
   return (
-    <Select onValueChange={onValueChange} value={value}>
+    <Select defaultValue={value} onValueChange={onValueChange}>
       <SelectTrigger className={className}>
-        <SelectValue placeholder={placeholder} />
+        {mounted ? (
+          <SelectValue placeholder={placeholder} />
+        ) : (
+          // Static text for the first paint so there’s no placeholder → label swap
+          <span suppressHydrationWarning>{initialStaticLabel}</span>
+        )}
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (

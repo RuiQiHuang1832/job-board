@@ -1,5 +1,5 @@
 export interface BaseJobProps {
-  id: number
+  id: string
   title: string
   company: string
   daysPosted: number
@@ -24,7 +24,7 @@ interface JobUIState {
 }
 
 export interface SearchResult {
-  id: number
+  id: string
   score: number
   pay: number
   daysPosted: number

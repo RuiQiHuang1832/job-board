@@ -1,13 +1,18 @@
 import { useState } from 'react'
 
+import { useURLParams } from '@/app/jobs/hooks'
 import { DetailedJobProps } from '@/app/jobs/shared'
 export const useJobOperations = (allJobs: DetailedJobProps[]) => {
-  const [hiddenJobs, setHiddenJobs] = useState<Set<number>>(new Set())
-  const [savedJobs, setSavedJobs] = useState<Set<number>>(new Set())
-  const [activeJobId, setActiveJobId] = useState<number>(allJobs[0]?.id || 0)
+  const { updateURL, getParam } = useURLParams()
+  const [hiddenJobs, setHiddenJobs] = useState<Set<string>>(new Set())
+  const [savedJobs, setSavedJobs] = useState<Set<string>>(new Set())
+  const initialActiveJob = getParam('id')
+  const [activeJobId, setActiveJobId] = useState<string>(
+    allJobs.find((job) => job.id === initialActiveJob)?.id || '1',
+  )
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleJobSave = (id: number) => {
+  const handleJobSave = (id: string) => {
     setSavedJobs((prev) => {
       const savedJobSet = new Set(prev)
       if (savedJobSet.has(id)) {
@@ -19,7 +24,7 @@ export const useJobOperations = (allJobs: DetailedJobProps[]) => {
     })
   }
 
-  const handleJobHide = (id: number) => {
+  const handleJobHide = (id: string) => {
     setHiddenJobs((prev) => {
       const hiddenJobSet = new Set(prev)
       if (hiddenJobSet.has(id)) {
@@ -30,9 +35,10 @@ export const useJobOperations = (allJobs: DetailedJobProps[]) => {
       return hiddenJobSet
     })
   }
-  const handleActiveJobCard = (id: number) => {
+  const handleActiveJobCard = (id: string) => {
     setActiveJobId(id)
-    simulateLoading(1000)
+    updateURL({ id })
+    simulateLoading(500)
   }
 
   const simulateLoading = (duration: number) => {

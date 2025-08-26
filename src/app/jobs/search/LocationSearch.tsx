@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { AutocompleteSearch } from '@/components/common/AutocompleteSearch'
 
-interface Location {
+export interface Location {
   id: string
   label: string
   value: string
@@ -15,7 +15,12 @@ type LocationIQResponse = {
   }
 }
 
-export function LocationSearch() {
+interface LocationSearchProps {
+  onLocationSelect: (location: string) => void
+  initialValue:string;
+}
+
+export function LocationSearch({ onLocationSelect, initialValue }: LocationSearchProps) {
   const [locations, setLocations] = useState<Location[]>([])
   const [inputValue, setInputValue] = useState('')
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
@@ -85,13 +90,19 @@ export function LocationSearch() {
       })
   }, [debouncedInputValue])
 
+  const handleLocationSelect = (selectedOption: Location) => {
+    onLocationSelect(selectedOption.label)
+  }
+
   return (
     <AutocompleteSearch
       options={locations}
       placeholder="Enter location or 'remote'"
       onInputChange={handleInputChange}
+      onSelect={handleLocationSelect}
       inputClassName="pl-10"
       size="lg"
+      initialValue={initialValue}
     />
   )
 }

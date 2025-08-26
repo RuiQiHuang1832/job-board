@@ -51,3 +51,5 @@ export const filterConfig = [
 // ['key']        – Extract the 'key' value from each item
 // Final result   – 'jobType' | 'salary' | 'distance' | ...
 export type FilterKey = (typeof filterConfig)[number]['key']
+
+export type FilterState = Record<FilterKey, string>

@@ -21,9 +21,9 @@ import { cn } from '@/lib/utils'
 interface JobCardProps extends BaseJobProps {
   isSelected: boolean
   saved: boolean
-  onJobClick: (id: number) => void
-  onJobHide: (id: number) => void
-  onJobSave: (id: number) => void
+  onJobClick: (id: string) => void
+  onJobHide: (id: string) => void
+  onJobSave: (id: string) => void
 }
 
 export default function JobCard(props: JobCardProps) {

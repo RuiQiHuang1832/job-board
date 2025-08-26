@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { filterConfig, FilterKey } from './filterConfig'
+import { FilterKey, FilterState, filterConfig } from './filterConfig'
 
-export function useJobFilters() {
+export function useJobFilters(overrides?: Partial<FilterState>) {
   const initialFilters = filterConfig.reduce(
     (acc, filter) => {
       acc[filter.key] = ''
@@ -11,7 +11,7 @@ export function useJobFilters() {
     {} as Record<FilterKey, string>,
   )
 
-  const [filters, setFilters] = useState(initialFilters)
+  const [filters, setFilters] = useState<FilterState>({ ...initialFilters, ...overrides })
 
   const updateFilter = (key: FilterKey, value: string) => {
     setFilters((prev) => ({
