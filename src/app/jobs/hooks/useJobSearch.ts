@@ -10,10 +10,10 @@ const TOP = 6
 export const useJobSearch = (allJobs: DetailedJobProps[]) => {
   const { updateURL, getParam } = useURLParams()
   const initialFilterState = {
-    jobType: getParam('jobType') || "",
-    salary: getParam('salary') || "",
-    education: getParam('education') || "",
-    daysPosted: getParam('daysPosted') || "",
+    jobType: getParam('jobType') || '',
+    salary: getParam('salary') || '',
+    education: getParam('education') || '',
+    daysPosted: getParam('daysPosted') || '',
   }
 
   const { filters, updateFilter } = useJobFilters(initialFilterState)
