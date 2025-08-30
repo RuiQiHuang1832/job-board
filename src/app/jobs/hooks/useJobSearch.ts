@@ -1,133 +1,176 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useReducer, useRef } from 'react'
 
-import { useURLParams } from '@/app/jobs/hooks'
-import { filter, useJobFilters } from '@/app/jobs/job-filter'
+import { useSyncURLWithState, useURLParams } from '@/app/jobs/hooks'
+import { abbreviateLocation, sort, topJobs } from '@/app/jobs/hooks/utils'
+import { applyFilter, useJobFilters } from '@/app/jobs/job-filter'
 import { FilterKey } from '@/app/jobs/job-filter/filterConfig'
 import { search } from '@/app/jobs/search'
-import { DetailedJobProps, SearchResult, SortOrder, stateAbbreviations } from '@/app/jobs/shared'
+import { DetailedJobProps, SearchResult, SortOrder } from '@/app/jobs/shared'
 
-const TOP = 6
-export const useJobSearch = (allJobs: DetailedJobProps[]) => {
-  const { updateURL, getParam } = useURLParams()
-  const initialFilterState = {
-    jobType: getParam('jobType') || '',
-    salary: getParam('salary') || '',
-    education: getParam('education') || '',
-    daysPosted: getParam('daysPosted') || '',
+type State = {
+  searchValue: string
+  locationValue: string
+  sortOrder: SortOrder
+  searchResults: SearchResult[]
+}
+
+type Action =
+  | { type: 'SET_SEARCH_VALUE'; payload: string }
+  | { type: 'SET_LOCATION_VALUE'; payload: string }
+  | { type: 'SET_SORT_ORDER'; payload: SortOrder }
+  | { type: 'SET_SEARCH_RESULTS'; payload: SearchResult[] }
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'SET_SEARCH_VALUE':
+      return { ...state, searchValue: action.payload }
+    case 'SET_LOCATION_VALUE':
+      return { ...state, locationValue: action.payload }
+    case 'SET_SORT_ORDER':
+      return { ...state, sortOrder: action.payload }
+    case 'SET_SEARCH_RESULTS':
+      return { ...state, searchResults: action.payload }
+    default:
+      return state
   }
+}
 
-  const { filters, updateFilter } = useJobFilters(initialFilterState)
-  const initialSearchValue = getParam('q') || ''
-  const initialLocationValue = getParam('location') || ''
-  const initialSortValue = getParam('sort') || ''
-  //TODO: Eventually remove this part, and instead do DEFAULT_SEARCH_QUERY + DEFAULT_LOCATION, RIGHT NOW IT TAKES TOP 6, as noted in NOTES.md
-  const [searchIDs, setSearchIDs] = useState<SearchResult[]>(() => {
-    const query = getParam('q')
-    const location = getParam('location')
+const init = (args: {
+  allJobs: readonly DetailedJobProps[]
+  getParam: (k: string) => string | null
+}): State => {
+  const { allJobs, getParam } = args
+  const initialQuery = getParam('q') || ''
+  const initialLocation = getParam('location') || ''
+  const initialSort = (getParam('sort') as SortOrder) || 'relevance'
 
-    // If URL has search params, use them
-    if (query || location) {
-      return search(allJobs, query, location)
-    }
-    // Otherwise, default to top jobs
-    return allJobs.slice(0, TOP).map((job) => ({
-      id: job.id,
-      score: 1,
-      pay: job.pay ? parseInt(job.pay.split('–')[0].replace(/[$,]/g, '')) : 0,
-      daysPosted: job.daysPosted,
-    }))
-  })
-  const [sortOrder, setSortOrder] = useState<SortOrder>(() => {
-    return (getParam('sort') as SortOrder) || 'relevance'
-  })
+  const initialSearchIDs =
+    initialQuery || initialLocation
+      ? search(allJobs, initialQuery, initialLocation)
+      : topJobs(allJobs)
+
+  return {
+    searchValue: initialQuery,
+    locationValue: initialLocation,
+    sortOrder: initialSort,
+    searchResults: initialSearchIDs,
+  }
+}
+
+export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
+  const { updateURL, getParam } = useURLParams()
+  const [state, dispatch] = useReducer(reducer, { allJobs, getParam }, init)
+  const { filters, updateFilter, updateFilters } = useJobFilters(() => ({
+    jobType: getParam('jobType') ?? '',
+    salary: getParam('salary') ?? '',
+    education: getParam('education') ?? '',
+    daysPosted: getParam('daysPosted') ?? '',
+  }))
   const locationSearchRef = useRef<string>(getParam('location') || '')
   const searchInputRef = useRef<HTMLInputElement>(null)
+
+  //TODO: Eventually remove this part, and instead do DEFAULT_SEARCH_QUERY + DEFAULT_LOCATION, RIGHT NOW IT TAKES TOP 6, as noted in NOTES.md
+
   // ✅ Single function that syncs ALL current state to URL
-  const syncURLWithState = useCallback(
-    (overrides = {}) => {
-      const query = searchInputRef.current?.value || ''
-      const location = abbreviateLocation(locationSearchRef.current)
+  const syncURLWithState = useSyncURLWithState({
+    updateURL,
+    searchInputRef,
+    locationRef: locationSearchRef,
+    filters,
+    sortOrder: state.sortOrder,
+  })
 
-      updateURL({
-        q: query,
-        location: location,
-        sort: sortOrder,
-        ...filters,
-        ...overrides, // ✅ Override with new values
-      })
-    },
-    [updateURL, sortOrder, filters],
-  )
-
-  const abbreviateLocation = (fullLocation: string) => {
-    if (!fullLocation) {
-      return ''
-    }
-    const parts = fullLocation.split(',') // ["Oakland", " California"]
-    const city = parts[0].trim()
-    const stateFull = parts[1]?.trim()
-    const stateShort = stateFull ? stateAbbreviations[stateFull] || stateFull : ''
-
-    return `${city}, ${stateShort}`
-  }
-
-  const sort = (rows: SearchResult[], order: SortOrder) => {
-    if (order == 'relevance') {
-      return [...rows].sort((a, b) => b.score - a.score)
-    } else if (order == 'compensation') {
-      return [...rows].sort((a, b) => b.pay - a.pay)
-    } else if (order == 'date') {
-      return [...rows].sort((a, b) => a.daysPosted - b.daysPosted)
-    }
-    return rows
-  }
   const handleSearch = () => {
     const locationValue = locationSearchRef.current || ''
-
     const query = searchInputRef.current?.value || ''
 
     if (!query && !locationValue) {
-      setSearchIDs([])
+      dispatch({ type: 'SET_SEARCH_RESULTS', payload: topJobs(allJobs) })
       return
     }
     syncURLWithState()
     // Search keyword + Location
-    const search_id = search(allJobs, query, abbreviateLocation(locationValue))
-    setSearchIDs(search_id)
+    const results = search(allJobs, query, abbreviateLocation(locationValue))
+    dispatch({ type: 'SET_SEARCH_RESULTS', payload: results })
   }
-
   // Clean functions without URL side effects
   const handleSortChange = (order: SortOrder) => {
-    setSortOrder(order)
+    dispatch({ type: 'SET_SORT_ORDER', payload: order })
     syncURLWithState({ sort: order })
   }
-
   const handleFilterChange = (key: FilterKey, value: string) => {
     updateFilter(key, value)
     syncURLWithState({ [key]: value })
   }
   // Sort will only trigger when Search is populated
   const displayedJobs = useMemo(() => {
-    if (searchIDs.length == 0) {
+    if (state.searchResults.length == 0) {
       return []
     }
 
-    const filter_id = filter(allJobs, searchIDs, filters)
-    const sorted_id = sort(filter_id, sortOrder)
+    const filter_id = applyFilter(allJobs, state.searchResults, filters)
+    const sorted_id = sort(filter_id, state.sortOrder)
     const results = sorted_id.map(({ id }) => allJobs.find((job) => job.id === id))
-    return results.filter((job) => job !== undefined)
-  }, [allJobs, searchIDs, filters, sortOrder])
+    return results as DetailedJobProps[]
+  }, [allJobs, state.searchResults, filters, state.sortOrder])
+
+  // ONLY react to history traversal (back and forth) - optimization
+  useEffect(() => {
+    const onPopState = () => {
+      const newFilters = {
+        jobType: getParam('jobType') || '',
+        salary: getParam('salary') || '',
+        education: getParam('education') || '',
+        daysPosted: getParam('daysPosted') || '',
+      }
+
+      const newSearchValue = getParam('q') || ''
+      const newLocationValue = getParam('location') || ''
+      const newSortOrder = (getParam('sort') as SortOrder) || 'relevance'
+
+      dispatch({ type: 'SET_SEARCH_VALUE', payload: newSearchValue })
+      dispatch({ type: 'SET_LOCATION_VALUE', payload: newLocationValue })
+      dispatch({ type: 'SET_SORT_ORDER', payload: newSortOrder })
+
+      // Update state when URL changes
+      updateFilters({
+        jobType: newFilters.jobType,
+        salary: newFilters.salary,
+        education: newFilters.education,
+        daysPosted: newFilters.daysPosted,
+      })
+
+      if (searchInputRef.current) {
+        searchInputRef.current.value = newSearchValue
+      }
+      locationSearchRef.current = newLocationValue
+
+      // Also re-run search when URL changes
+      if (newSearchValue || newLocationValue) {
+        const search_id = search(allJobs, newSearchValue, newLocationValue)
+        dispatch({ type: 'SET_SEARCH_RESULTS', payload: search_id })
+      } else {
+        // Reset to top jobs if no search params
+        dispatch({
+          type: 'SET_SEARCH_RESULTS',
+          payload: topJobs(allJobs),
+        })
+      }
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return {
-    searchIDs,
-    sortOrder,
+    searchResults: state.searchResults,
+    sortOrder: state.sortOrder,
     searchInputRef,
     locationSearchRef,
     displayedJobs,
-    initialSearchValue,
-    initialLocationValue,
-    initialFilterState,
-    initialSortValue,
+    searchValue: state.searchValue,
+    locationValue: state.locationValue,
+    filters,
     handleSearch,
     handleSortChange,
     handleFilterChange,

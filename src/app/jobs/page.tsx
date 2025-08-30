@@ -20,12 +20,12 @@ import { useJobOperations, useJobSearch } from './hooks'
 
 export default function JobsPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense>
       <JobsPageContent />
     </Suspense>
   )
 }
- function JobsPageContent() {
+function JobsPageContent() {
   const {
     savedJobs,
     hiddenJobs,
@@ -34,24 +34,24 @@ export default function JobsPage() {
     handleJobSave,
     handleJobHide,
     handleActiveJobCard,
-  } = useJobOperations([...jobListings])
+  } = useJobOperations(jobListings)
   const {
-    searchIDs,
+    searchResults,
     sortOrder,
     searchInputRef,
     locationSearchRef,
     displayedJobs,
-    initialSearchValue,
-    initialLocationValue,
-    initialFilterState,
-    initialSortValue,
+    searchValue,
+    locationValue,
+    filters,
     handleSearch,
     handleSortChange,
     handleFilterChange,
-  } = useJobSearch([...jobListings])
-
+  } = useJobSearch(jobListings)
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
+
+  console.log('Rendering JOBSPAGE')
 
   return (
     <div className="max-w-[90rem] mx-auto p-8">
@@ -73,7 +73,7 @@ export default function JobsPage() {
                 size="lg"
                 placeholder="Search jobs, keywords, company"
                 ref={searchInputRef}
-                defaultValue={initialSearchValue}
+                defaultValue={searchValue}
               />
             </IconInput>
           </div>
@@ -83,7 +83,7 @@ export default function JobsPage() {
                 onLocationSelect={(selectedLocation) => {
                   locationSearchRef.current = selectedLocation
                 }}
-                initialValue={initialLocationValue}
+                value={locationValue}
               />
             </IconInput>
           </div>
@@ -93,7 +93,7 @@ export default function JobsPage() {
         </Stack>
       </div>
       {/* Filters */}
-      <JobFilter updateFilter={handleFilterChange} initialState={initialFilterState} />
+      <JobFilter updateFilter={handleFilterChange} filterState={filters} />
       {/* Job Results */}
 
       <Stack align="start" className="gap-x-6">
@@ -106,15 +106,14 @@ export default function JobsPage() {
             <Stack gap={2}>
               <div>73,600 total jobs</div>
               <MenuDropdown
-                disabled={searchIDs.length === 0}
+                disabled={searchResults.length === 0}
                 trigger={<FaSortAmountDown />}
                 content={
                   <RadioForm
                     onValueChange={(value) => handleSortChange(value as SortOrder)}
                     items={radioFormOptions}
-                    defaultValue={initialSortValue}
+                    value={sortOrder}
                     title="Sort by"
-                    order={sortOrder}
                   />
                 }
                 align="end"

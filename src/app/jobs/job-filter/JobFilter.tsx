@@ -6,7 +6,7 @@ import { filterConfig, FilterKey } from './filterConfig'
 
 interface JobFiltersProps {
   updateFilter: (key: FilterKey, value: string) => void
-  initialState: Record<FilterKey, string>
+  filterState: Record<FilterKey, string>
 }
 
 export function JobFilter({ ...props }: JobFiltersProps) {
@@ -18,9 +18,9 @@ export function JobFilter({ ...props }: JobFiltersProps) {
           options={[...filter.options]}
           placeholder={filter.placeholder}
           onValueChange={(value) => props.updateFilter(filter.key, value)}
-          value={props.initialState[filter.key]}
+          value={props.filterState[filter.key]}
           initialStaticLabel={
-            filter.options.find((option) => option.value === props.initialState[filter.key])
+            filter.options.find((option) => option.value === props.filterState[filter.key])
               ?.label || filter.placeholder
           }
         />

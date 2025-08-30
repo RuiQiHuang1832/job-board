@@ -17,14 +17,13 @@ type LocationIQResponse = {
 
 interface LocationSearchProps {
   onLocationSelect: (location: string) => void
-  initialValue:string;
+  value: string
 }
 
-export function LocationSearch({ onLocationSelect, initialValue }: LocationSearchProps) {
+export function LocationSearch({ onLocationSelect, value }: LocationSearchProps) {
   const [locations, setLocations] = useState<Location[]>([])
   const [inputValue, setInputValue] = useState('')
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
-
   const handleInputChange = (value: string) => {
     setInputValue(value)
   }
@@ -102,7 +101,7 @@ export function LocationSearch({ onLocationSelect, initialValue }: LocationSearc
       onSelect={handleLocationSelect}
       inputClassName="pl-10"
       size="lg"
-      initialValue={initialValue}
+      value={value}
     />
   )
 }

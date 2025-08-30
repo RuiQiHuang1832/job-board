@@ -15,7 +15,7 @@ interface AutocompleteSearchProps {
   onSelect?: (selectedOption: optionsType) => void
   inputClassName?: string
   size: 'sm' | 'md' | 'lg'
-  initialValue: string
+  value: string
 }
 
 export function AutocompleteSearch({
@@ -25,9 +25,9 @@ export function AutocompleteSearch({
   onSelect,
   inputClassName,
   size,
-  initialValue
+  value,
 }: AutocompleteSearchProps) {
-  const [inputValue, setInputValue] = useState(initialValue)
+  const [inputValue, setInputValue] = useState(value)
   const [open, setOpen] = useState(false)
 
   const { selectedIndex, handleKeyDown, resetSelection } = useKeyboardNavigation({
@@ -41,6 +41,11 @@ export function AutocompleteSearch({
   useEffect(() => {
     resetSelection()
   }, [options.length, resetSelection])
+
+
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
 
   const selectOption = (option: optionsType) => {
     setInputValue(option.label)

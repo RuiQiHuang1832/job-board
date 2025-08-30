@@ -1,24 +1,33 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { FilterKey, FilterState, filterConfig } from './filterConfig'
 
-export function useJobFilters(overrides?: Partial<FilterState>) {
-  const initialFilters = filterConfig.reduce(
-    (acc, filter) => {
-      acc[filter.key] = ''
-      return acc
-    },
-    {} as Record<FilterKey, string>,
-  )
+type InitArg = Partial<FilterState> | (() => FilterState)
 
-  const [filters, setFilters] = useState<FilterState>({ ...initialFilters, ...overrides })
+const emptyFilters = filterConfig.reduce(
+  (acc, filter) => {
+    acc[filter.key] = ''
+    return acc
+  },
+  {} as Record<FilterKey, string>,
+)
+export function useJobFilters(initialArg: InitArg) {
+  const [filters, setFilters] = useState<FilterState>(() => {
+    const empty = emptyFilters
+    const provided = typeof initialArg === 'function' ? initialArg() : initialArg
+    return { ...empty, ...provided }
+  })
 
-  const updateFilter = (key: FilterKey, value: string) => {
+  const updateFilter = useCallback((key: FilterKey, value: string) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
     }))
-  }
+  }, [])
 
-  return { filters, updateFilter }
+  const updateFilters = useCallback((patch: Partial<FilterState>) => {
+    setFilters((prev) => ({ ...prev, ...patch }))
+  }, [])
+
+  return { filters, updateFilter, updateFilters }
 }

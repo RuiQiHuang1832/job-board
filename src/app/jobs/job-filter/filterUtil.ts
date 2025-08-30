@@ -1,8 +1,8 @@
 import { DetailedJobProps, SearchResult } from '@/app/jobs/shared'
 
-export function filter(
-  jobs: DetailedJobProps[],
-  searchIDs: SearchResult[],
+export function applyFilter(
+  jobs: readonly DetailedJobProps[],
+  searchResults: SearchResult[],
   filters: {
     daysPosted?: string
     jobType?: string
@@ -15,7 +15,7 @@ export function filter(
 
   for (const job of jobs) {
     // If we have search results, only consider jobs in search results
-    if (searchIDs.length > 0 && !searchIDs.map((e) => e.id).includes(job.id)) {
+    if (searchResults.length > 0 && !searchResults.map((e) => e.id).includes(job.id)) {
       continue // otherwise skip this job iteration
     }
     // Apply filters
@@ -59,7 +59,7 @@ export function filter(
     if (passesFilters) {
       rows.push({
         id: job.id,
-        score: searchIDs.find((e) => e.id === job.id)?.score || 0,
+        score: searchResults.find((e) => e.id === job.id)?.score || 0,
         pay: parseInt(job.pay.split('–')[0].replace(/[$,]/g, '')),
         daysPosted: job.daysPosted,
       })

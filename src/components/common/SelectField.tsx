@@ -33,7 +33,7 @@ export function SelectField({
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   return (
-    <Select defaultValue={value} onValueChange={onValueChange}>
+    <Select defaultValue={value} value={value} onValueChange={onValueChange}>
       <SelectTrigger className={className}>
         {mounted ? (
           <SelectValue placeholder={placeholder} />

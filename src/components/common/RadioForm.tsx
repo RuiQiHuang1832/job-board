@@ -9,18 +9,17 @@ interface RadioItem {
 
 interface RadioFormProps {
   items: readonly RadioItem[]
-  defaultValue: string
+  value: string
   title?: string
   onValueChange?: (value: string) => void
   disabled?: boolean
-  order:string
 }
 
-export function RadioForm({ items, defaultValue, title, onValueChange, disabled, order }: RadioFormProps) {
+export function RadioForm({ items, value, title, onValueChange, disabled }: RadioFormProps) {
   return (
     <div className="space-y-3 p-4">
       {title && <Label className="text-base font-medium">{title}</Label>}
-      <RadioGroup defaultValue={defaultValue} onValueChange={onValueChange} disabled={disabled} value={order}>
+      <RadioGroup value={value} onValueChange={onValueChange} disabled={disabled}>
         {items.map((item) => (
           <div className="flex items-center gap-3" key={item.id}>
             <RadioGroupItem value={item.value} id={item.id} />

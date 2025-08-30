@@ -14,7 +14,7 @@ const weight = {
   description: 1,
 } as const
 
-export function search(jobs: DetailedJobProps[], query: string, location: string): SearchResult[] {
+export function search(jobs: readonly DetailedJobProps[], query: string, location: string): SearchResult[] {
   // Normalize query
   const q = normalize(query || '')
   // Tokenize query
