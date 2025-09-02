@@ -29,5 +29,9 @@ export function useJobFilters(initialArg: InitArg) {
     setFilters((prev) => ({ ...prev, ...patch }))
   }, [])
 
-  return { filters, updateFilter, updateFilters }
+  const clearAll = () => {
+    setFilters(emptyFilters)
+  }
+
+  return { filters, updateFilter, updateFilters, clearAll }
 }

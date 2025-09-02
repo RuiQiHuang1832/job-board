@@ -36,7 +36,7 @@ export default function JobSidebar(props: DetailedJobWithUIState) {
     ] as const
 
   return (
-    <Card className="w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 ">
+    <Card className="hidden lg:block w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 ">
       <CardHeader>
         <CardTitle className="text-2xl">{props.title}</CardTitle>
         <CardDescription>

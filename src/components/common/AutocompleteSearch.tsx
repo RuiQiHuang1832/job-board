@@ -16,6 +16,7 @@ interface AutocompleteSearchProps {
   inputClassName?: string
   size: 'sm' | 'md' | 'lg'
   value: string
+  error: boolean
 }
 
 export function AutocompleteSearch({
@@ -26,6 +27,7 @@ export function AutocompleteSearch({
   inputClassName,
   size,
   value,
+  error,
 }: AutocompleteSearchProps) {
   const [inputValue, setInputValue] = useState(value)
   const [open, setOpen] = useState(false)
@@ -41,7 +43,6 @@ export function AutocompleteSearch({
   useEffect(() => {
     resetSelection()
   }, [options.length, resetSelection])
-
 
   useEffect(() => {
     setInputValue(value)
@@ -67,7 +68,7 @@ export function AutocompleteSearch({
           value={inputValue}
           type="text"
           size={size}
-          className={inputClassName}
+          className={`${inputClassName ?? ''} ${error ? '!border-red-500 focus:border-red-500 !ring-1 !ring-red-200' : ''}`}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
@@ -78,8 +79,9 @@ export function AutocompleteSearch({
             {options.map((option, index) => (
               <li key={option.id}>
                 <button
+                  disabled={error}
                   type="button"
-                  className={`cursor-pointer p-2 hover:bg-accent rounded w-full text-left ${
+                  className={`disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer p-2 hover:bg-accent rounded w-full text-left ${
                     selectedIndex === index ? 'bg-accent' : ''
                   }`}
                   onMouseDown={(e) => e.preventDefault()} // Prevent input blur

@@ -22,7 +22,7 @@ export default function JobSidebarSkeleton() {
     ['w-full', 'w-full', 'w-full', 'w-full'], // 4 lines
   ]
   return (
-    <Card className="w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 animate-pulse">
+    <Card className="hidden lg:block w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 animate-pulse">
       <CardHeader>
         <SkeletonLine width="w-1/3" height="h-7" />
         <SkeletonLine width="w-1/2" height="h-4" />

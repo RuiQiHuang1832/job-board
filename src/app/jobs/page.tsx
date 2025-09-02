@@ -6,9 +6,10 @@ import { FaSortAmountDown } from 'react-icons/fa'
 
 import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
 import { JobFilter } from '@/app/jobs/job-filter'
-import { JobCard } from '@/app/jobs/job-listing'
+import { EmptyState, JobCard } from '@/app/jobs/job-listing'
 import { LocationSearch } from '@/app/jobs/search'
 import { DetailedJobProps, SortOrder, jobListings, radioFormOptions } from '@/app/jobs/shared'
+import Skeleton from '@/app/jobs/skeleton'
 import IconInput from '@/components/common/IconInput'
 import MenuDropdown from '@/components/common/MenuDropdown'
 import { RadioForm } from '@/components/common/RadioForm'
@@ -44,9 +45,11 @@ function JobsPageContent() {
     searchValue,
     locationValue,
     filters,
+    clearAll,
     handleSearch,
     handleSortChange,
     handleFilterChange,
+    isHydrated,
   } = useJobSearch(jobListings)
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
@@ -58,7 +61,12 @@ function JobsPageContent() {
       {/* Search Section */}
       <div className="mb-8">
         <Stack className="mb-6" justify="between" align="center">
-          <h1 className="">Find Your Next Job</h1>
+          <Stack align="start" direction="col">
+            <h1>🌱 GreenRevolution</h1>
+            <h3 className="font-semibold">
+              Find Sustainability Jobs. Drive the Green Revolution.
+            </h3>
+          </Stack>
           <Button variant="outline">
             <BsFillSignpost2Fill />
             Post or Promote a Job
@@ -93,74 +101,81 @@ function JobsPageContent() {
         </Stack>
       </div>
       {/* Filters */}
-      <JobFilter updateFilter={handleFilterChange} filterState={filters} />
+      <JobFilter updateFilter={handleFilterChange} filterState={filters} clearAll={clearAll} />
       {/* Job Results */}
-
-      <Stack align="start" className="gap-x-6">
-        <div className={`grid gap-6 w-xl `}>
-          <Stack className="text-gray-500 text-sm" justify="between">
-            <div>
-              {displayedJobs.length} companies hiring{' '}
-              {locationSearchRef.current ? `in ${locationSearchRef.current}` : 'near you'}
-            </div>
-            <Stack gap={2}>
-              <div>73,600 total jobs</div>
-              <MenuDropdown
-                disabled={searchResults.length === 0}
-                trigger={<FaSortAmountDown />}
-                content={
-                  <RadioForm
-                    onValueChange={(value) => handleSortChange(value as SortOrder)}
-                    items={radioFormOptions}
-                    value={sortOrder}
-                    title="Sort by"
-                  />
-                }
-                align="end"
-              ></MenuDropdown>
-            </Stack>
-          </Stack>
-          {displayedJobs.map((jobDetails) =>
-            hiddenJobs.has(jobDetails.id) ? (
-              <Stack
-                key={jobDetails.id}
-                className="p-4 bg-gray-100 border border-gray-200 rounded-lg"
-                direction="col"
-                gap={0}
-              >
-                <p>Job hidden</p>
-                <p className="text-sm">
-                  {jobDetails.title} at {jobDetails.company}
-                </p>
-                <Button
-                  variant="link"
-                  className="ms-auto"
-                  onClick={() => handleJobHide(jobDetails.id)}
-                >
-                  Undo
-                </Button>
+      {!isHydrated ? (
+        <Skeleton />
+      ) : (
+        <Stack align="start" className="gap-x-6">
+          <div className={`grid gap-6 lg:w-xl w-full `}>
+            <Stack className="text-gray-500 text-sm" justify="between">
+              <div>
+                {displayedJobs.length} companies hiring{' '}
+                {locationSearchRef.current ? `in ${locationSearchRef.current}` : 'near you'}
+              </div>
+              <Stack gap={2}>
+                <div>73,600 total jobs</div>
+                <MenuDropdown
+                  disabled={searchResults.length === 0}
+                  trigger={<FaSortAmountDown />}
+                  content={
+                    <RadioForm
+                      onValueChange={(value) => handleSortChange(value as SortOrder)}
+                      items={radioFormOptions}
+                      value={sortOrder}
+                      title="Sort by"
+                    />
+                  }
+                  align="end"
+                ></MenuDropdown>
               </Stack>
+            </Stack>
+            {displayedJobs.length === 0 ? (
+              <EmptyState keyword={searchInputRef.current?.value} />
             ) : (
-              <JobCard
-                isSelected={activeJobId === jobDetails.id}
-                onJobClick={handleActiveJobCard}
-                key={jobDetails.id}
-                {...jobDetails}
-                onJobHide={handleJobHide}
-                onJobSave={handleJobSave}
-                saved={savedJobs.has(jobDetails.id)}
-              />
-            ),
+              displayedJobs.map((jobDetails) =>
+                hiddenJobs.has(jobDetails.id) ? (
+                  <Stack
+                    key={jobDetails.id}
+                    className="p-4 bg-gray-100 border border-gray-200 rounded-lg"
+                    direction="col"
+                    gap={0}
+                  >
+                    <p>Job hidden</p>
+                    <p className="text-sm">
+                      {jobDetails.title} at {jobDetails.company}
+                    </p>
+                    <Button
+                      variant="link"
+                      className="ms-auto"
+                      onClick={() => handleJobHide(jobDetails.id)}
+                    >
+                      Undo
+                    </Button>
+                  </Stack>
+                ) : (
+                  <JobCard
+                    isSelected={activeJobId === jobDetails.id}
+                    onJobClick={handleActiveJobCard}
+                    key={jobDetails.id}
+                    {...jobDetails}
+                    onJobHide={handleJobHide}
+                    onJobSave={handleJobSave}
+                    saved={savedJobs.has(jobDetails.id)}
+                  />
+                ),
+              )
+            )}
+          </div>
+          {isLoading ? (
+            <JobSidebarSkeleton />
+          ) : activeJob ? (
+            <JobSidebar {...activeJob} isHidden={hiddenJobs.has(activeJob.id)} />
+          ) : (
+            ''
           )}
-        </div>
-        {isLoading ? (
-          <JobSidebarSkeleton />
-        ) : activeJob ? (
-          <JobSidebar {...activeJob} isHidden={hiddenJobs.has(activeJob.id)} />
-        ) : (
-          ''
-        )}
-      </Stack>
+        </Stack>
+      )}
     </div>
   )
 }

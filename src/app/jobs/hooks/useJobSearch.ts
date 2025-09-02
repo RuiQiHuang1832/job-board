@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react'
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 
 import { useSyncURLWithState, useURLParams } from '@/app/jobs/hooks'
 import { abbreviateLocation, sort, topJobs } from '@/app/jobs/hooks/utils'
@@ -60,7 +60,7 @@ const init = (args: {
 export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   const { updateURL, getParam } = useURLParams()
   const [state, dispatch] = useReducer(reducer, { allJobs, getParam }, init)
-  const { filters, updateFilter, updateFilters } = useJobFilters(() => ({
+  const { filters, updateFilter, updateFilters, clearAll } = useJobFilters(() => ({
     jobType: getParam('jobType') ?? '',
     salary: getParam('salary') ?? '',
     education: getParam('education') ?? '',
@@ -68,6 +68,12 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   }))
   const locationSearchRef = useRef<string>(getParam('location') || '')
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setIsHydrated(true), 0)
+    return () => window.clearTimeout(t)
+  }, [])
 
   //TODO: Eventually remove this part, and instead do DEFAULT_SEARCH_QUERY + DEFAULT_LOCATION, RIGHT NOW IT TAKES TOP 6, as noted in NOTES.md
 
@@ -174,5 +180,7 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
     handleSearch,
     handleSortChange,
     handleFilterChange,
+    isHydrated,
+    clearAll
   }
 }

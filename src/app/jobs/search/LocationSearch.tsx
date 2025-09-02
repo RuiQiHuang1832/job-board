@@ -23,6 +23,7 @@ interface LocationSearchProps {
 export function LocationSearch({ onLocationSelect, value }: LocationSearchProps) {
   const [locations, setLocations] = useState<Location[]>([])
   const [inputValue, setInputValue] = useState('')
+  const [error, setError] = useState<boolean>(false)
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
   const handleInputChange = (value: string) => {
     setInputValue(value)
@@ -82,10 +83,12 @@ export function LocationSearch({ onLocationSelect, value }: LocationSearchProps)
             value: e.address.city!.toLowerCase(),
           }))
         setLocations(newLocations)
+        setError(false)
       })
       .catch((err) => {
         console.error('Failed to fetch locations:', err)
-        setLocations([])
+        setLocations([{ id: '-1', label: 'No locations found', value: 'No locations found' }])
+        setError(true)
       })
   }, [debouncedInputValue])
 
@@ -102,6 +105,7 @@ export function LocationSearch({ onLocationSelect, value }: LocationSearchProps)
       inputClassName="pl-10"
       size="lg"
       value={value}
+      error={error}
     />
   )
 }
