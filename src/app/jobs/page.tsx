@@ -1,9 +1,10 @@
 'use client'
 import { Suspense, useState } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
-import { BsFillSignpost2Fill } from 'react-icons/bs'
+import { BsBookmark, BsFillSignpost2Fill } from 'react-icons/bs'
 import { FaSortAmountDown } from 'react-icons/fa'
 import { FaArrowLeftLong } from 'react-icons/fa6'
+import { GoTrash } from 'react-icons/go'
 
 import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
 import { JobFilter } from '@/app/jobs/job-filter'
@@ -14,6 +15,7 @@ import Skeleton from '@/app/jobs/skeleton'
 import IconInput from '@/components/common/IconInput'
 import MenuDropdown from '@/components/common/MenuDropdown'
 import { RadioForm } from '@/components/common/RadioForm'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
@@ -92,10 +94,19 @@ function JobsPageContent() {
               <div className="text-green-600 sm:block hidden"> GreenRevolution</div>
             </Stack>
           </h1>
-          <Button variant="outline" size="lg">
-            <BsFillSignpost2Fill />
-            Post a Job
-          </Button>
+          <Stack>
+            <Button className="relative" title="Saved Jobs" variant="outline" size="lg">
+              <BsBookmark className="size-[1.1rem]" />
+              <Badge className="absolute -top-2 -right-2">21</Badge>
+            </Button>
+            <Button className="relative" title="Hidden Jobs" variant="outline" size="lg">
+              <GoTrash className="size-[1.4rem]" />
+              <Badge className="absolute -top-2 -right-2">7</Badge>
+            </Button>
+            <Button className="bg-blue-500" variant="link" title="Post a Job" size="lg">
+              <BsFillSignpost2Fill color="white" />
+            </Button>
+          </Stack>
         </Stack>
         <div className="mb-5">
           <h3>Find Sustainability Jobs. Drive the Green Revolution.</h3>
