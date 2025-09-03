@@ -1,8 +1,9 @@
 'use client'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 import { BsFillSignpost2Fill } from 'react-icons/bs'
 import { FaSortAmountDown } from 'react-icons/fa'
+import { FaArrowLeftLong } from 'react-icons/fa6'
 
 import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
 import { JobFilter } from '@/app/jobs/job-filter'
@@ -16,6 +17,7 @@ import { RadioForm } from '@/components/common/RadioForm'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
+import useIsMobile from '@/hooks/useIsMobile'
 
 import { useJobOperations, useJobSearch } from './hooks'
 
@@ -54,10 +56,33 @@ function JobsPageContent() {
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
-  console.log('Rendering JOBSPAGE')
+  const isMobile = useIsMobile()
+
+  const [showMobileDetail, setShowMobileDetail] = useState(false)
+
+  if (isMobile && showMobileDetail && activeJob) {
+    return (
+      <Stack
+        gap={0}
+        direction="col"
+        align="start"
+        className="fixed inset-0 z-50 bg-white overflow-auto "
+      >
+        <Button className="!px-6 mt-5" variant="link" onClick={() => setShowMobileDetail(false)}>
+          <FaArrowLeftLong color="black" className="size-[1.4rem]" />
+        </Button>
+        <JobSidebar
+          hideDueToMobile={false}
+          {...activeJob}
+          isHidden={hiddenJobs.has(activeJob.id)}
+          hideDetails={true}
+        />
+      </Stack>
+    )
+  }
 
   return (
-    <div className="max-w-[90rem] mx-auto p-8">
+    <div className=" max-w-[90rem] mx-auto p-5">
       {/* Search Section */}
       <div className="">
         <Stack className="mb-8" justify="between" align="center">
@@ -111,7 +136,7 @@ function JobsPageContent() {
       ) : (
         <Stack align="start" className="gap-x-6">
           <div className={`grid gap-6 lg:w-xl w-full `}>
-            <Stack className="text-gray-500 text-sm" justify="between">
+            <Stack className="text-gray-500 sm:text-sm text-xs" justify="between">
               <div>
                 {displayedJobs.length} companies hiring{' '}
                 {locationSearchRef.current ? `in ${locationSearchRef.current}` : 'near you'}
@@ -159,7 +184,10 @@ function JobsPageContent() {
                 ) : (
                   <JobCard
                     isSelected={activeJobId === jobDetails.id}
-                    onJobClick={handleActiveJobCard}
+                    onJobClick={(id) => {
+                      handleActiveJobCard(id)
+                      if (isMobile) setShowMobileDetail(true)
+                    }}
                     key={jobDetails.id}
                     {...jobDetails}
                     onJobHide={handleJobHide}
@@ -173,7 +201,11 @@ function JobsPageContent() {
           {isLoading ? (
             <JobSidebarSkeleton />
           ) : activeJob ? (
-            <JobSidebar {...activeJob} isHidden={hiddenJobs.has(activeJob.id)} />
+            <JobSidebar
+              hideDueToMobile={isMobile}
+              {...activeJob}
+              isHidden={hiddenJobs.has(activeJob.id)}
+            />
           ) : (
             ''
           )}

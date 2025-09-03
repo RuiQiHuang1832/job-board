@@ -24,9 +24,11 @@ import { cn } from '@/lib/utils'
 
 import styles from './JobSidebar.module.css'
 
-export default function JobSidebar(props: DetailedJobWithUIState) {
+export default function JobSidebar(
+  props: DetailedJobWithUIState & { hideDueToMobile?: boolean; hideDetails?: boolean },
+) {
   const [isExpanded, setIsExpanded] = useState(false)
-
+  const { hideDetails, hideDueToMobile } = props
   const companyMetadata: Array<{ icon: React.ComponentType; value: string | number | undefined }> =
     [
       { icon: HiOutlineBuildingOffice2, value: props.location },
@@ -36,7 +38,9 @@ export default function JobSidebar(props: DetailedJobWithUIState) {
     ] as const
 
   return (
-    <Card className="hidden lg:block w-full h-[calc(100vh-calc(1.25rem*2))] sticky top-5 flex-1 ">
+    <Card
+      className={`${hideDueToMobile && 'hidden'} ${hideDetails && 'border-0 shadow-none'} w-full h-auto lg:h-[calc(100vh-calc(1.25rem*2))] lg:sticky top-5 flex-1 md:py-6 py-1`}
+    >
       <CardHeader>
         <CardTitle className="text-2xl">{props.title}</CardTitle>
         <CardDescription>
@@ -57,7 +61,8 @@ export default function JobSidebar(props: DetailedJobWithUIState) {
               </>
             ) : (
               <>
-                <FaExternalLinkAlt></FaExternalLinkAlt>Apply Now
+                <FaExternalLinkAlt></FaExternalLinkAlt>
+                {!hideDetails && 'Apply Now'}
               </>
             )}
           </Button>
@@ -79,7 +84,7 @@ export default function JobSidebar(props: DetailedJobWithUIState) {
             {isExpanded ? <FiMinus /> : <FiPlus />} Show {isExpanded ? 'Less' : 'More'}
           </Button>
         </div>
-        <Stack direction="col" align="start" justify="end">
+        <Stack className="mb-5" direction="col" align="start" justify="end">
           <h5>Company Details</h5>
           <Stack gap={3}>
             <Avatar name={props.company} />

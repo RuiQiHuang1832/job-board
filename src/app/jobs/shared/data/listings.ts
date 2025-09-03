@@ -1,7 +1,7 @@
 export const jobListings = [
   {
     id: '0',
-    title: 'Senior UX Designer',
+    title: 'Senior UX Designer sad asd asd asd asd asd asd as',
     company: 'Dribbble',
     daysPosted: 2,
     location: 'San Francisco, CA',
@@ -162,7 +162,7 @@ Our team thrives on creativity, user empathy, and turning pixels into purpose.
     daysPosted: 40,
     location: 'San Francisco, CA',
     pay: '$200,000–$260,000',
-    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity'],
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
     jobType: 'Full-time',
     education: 'High School',
     description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.

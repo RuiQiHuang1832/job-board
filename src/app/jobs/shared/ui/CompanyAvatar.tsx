@@ -72,7 +72,7 @@ export default function CompanyAvatar({ name, alt, src }: CompanyAvatarProps) {
   return (
     <div
       className={cn(
-        'w-11 h-11 rounded-md text-1xl font-medium flex items-center justify-center',
+        'w-11 h-11 rounded-md text-1xl font-medium sm:flex items-center justify-center hidden flex-shrink-0',
         colorScheme.background,
         colorScheme.text,
       )}

@@ -51,14 +51,16 @@ export default function JobCard(props: JobCardProps) {
     >
       <CardHeader>
         <CardTitle>
-          <Stack gap={3}>
+          <Stack gap={3} className="flex-nowrap" align="start">
             <Avatar name={props.company} />
             <div>
               <Stack align="baseline">
                 <h4 className="text-primary font-bold group-hover:underline group-hover:decoration-[1px]">
                   {props.title}
                 </h4>
-                <div className="text-gray-400 font-light text-sm">{props.daysPosted} days ago</div>
+                <div className="text-gray-400 font-light text-sm hidden">
+                  {props.daysPosted} days ago
+                </div>
               </Stack>
               <div className="text-muted-foreground text-sm">{props.company}</div>
             </div>
@@ -97,7 +99,7 @@ export default function JobCard(props: JobCardProps) {
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-3">
-        <Stack gap={2} className="flex">
+        <Stack gap={2} className="flex-wrap">
           {props.tags.map((tag, index) => (
             <Tag key={index}>{tag}</Tag>
           ))}

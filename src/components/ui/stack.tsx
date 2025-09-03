@@ -53,8 +53,8 @@ function Stack({
   return (
     <div
       className={cn(
-        'flex',
-        direction === 'col' ? 'flex-col' : 'flex-row',
+        'flex', '',
+        direction === 'col' ? 'flex-col' : 'flex-row flex-wrap',
         gapMap[gap],
         alignMap[align],
         justify && justifyMap[justify],
