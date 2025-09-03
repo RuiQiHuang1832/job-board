@@ -59,21 +59,24 @@ function JobsPageContent() {
   return (
     <div className="max-w-[90rem] mx-auto p-8">
       {/* Search Section */}
-      <div className="mb-8">
-        <Stack className="mb-6" justify="between" align="center">
-          <Stack align="start" direction="col">
-            <h1>🌱 GreenRevolution</h1>
-            <h3 className="font-semibold">
-              Find Sustainability Jobs. Drive the Green Revolution.
-            </h3>
-          </Stack>
-          <Button variant="outline">
+      <div className="">
+        <Stack className="mb-8" justify="between" align="center">
+          <h1>
+            <Stack align="start" direction="row">
+              <div>🌱</div>
+              <div className="text-green-600 sm:block hidden"> GreenRevolution</div>
+            </Stack>
+          </h1>
+          <Button variant="outline" size="lg">
             <BsFillSignpost2Fill />
-            Post or Promote a Job
+            Post a Job
           </Button>
         </Stack>
-        <Stack className="mb-4">
-          <div className="flex-1/2">
+        <div className="mb-5">
+          <h3>Find Sustainability Jobs. Drive the Green Revolution.</h3>
+        </div>
+        <Stack gap={4} className="mb-4 lg:flex-row flex-col">
+          <div className="lg:flex-1/2 w-full">
             <IconInput icon={AiOutlineSearch}>
               <Input
                 className="pl-10"
@@ -85,7 +88,7 @@ function JobsPageContent() {
               />
             </IconInput>
           </div>
-          <div className="flex-3">
+          <div className="lg:flex-3 w-full">
             <IconInput icon={AiOutlineEnvironment}>
               <LocationSearch
                 onLocationSelect={(selectedLocation) => {
@@ -95,7 +98,7 @@ function JobsPageContent() {
               />
             </IconInput>
           </div>
-          <Button onClick={handleSearch} variant="default" size="lg">
+          <Button onClick={handleSearch} className="lg:w-auto w-full" variant="default" size="lg">
             Search
           </Button>
         </Stack>

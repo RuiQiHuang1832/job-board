@@ -17,7 +17,7 @@ export function JobFilter({ ...props }: JobFiltersProps) {
   const hasActiveFilters = Object.values(props.filterState).some((v) => v !== '' && v !== 'all')
 
   return (
-    <Stack className="mb-6">
+    <Stack className="mb-6 flex-wrap">
       {filterConfig.map((filter) => (
         <SelectField
           key={filter.key}
