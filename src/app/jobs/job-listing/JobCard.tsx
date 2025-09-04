@@ -104,7 +104,7 @@ export default function JobCard(props: JobCardProps) {
             <Tag key={index}>{tag}</Tag>
           ))}
         </Stack>
-        <p className="line-clamp-2">{props.description}</p>
+        <div className="line-clamp-2">{props.description}</div>
       </CardContent>
     </Card>
   )

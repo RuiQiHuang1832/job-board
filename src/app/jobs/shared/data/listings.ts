@@ -1,7 +1,7 @@
 export const jobListings = [
   {
     id: '0',
-    title: 'Senior UX Designer sad asd asd asd asd asd asd as',
+    title: 'Senior UX Designer',
     company: 'Dribbble',
     daysPosted: 2,
     location: 'San Francisco, CA',

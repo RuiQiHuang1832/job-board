@@ -11,6 +11,7 @@ interface MenuDropdownProps {
   align: 'start' | 'center' | 'end'
   side?: 'top' | 'right' | 'bottom' | 'left'
   disabled?: boolean
+  title: string
 }
 
 export default function MenuDropdown({
@@ -19,11 +20,12 @@ export default function MenuDropdown({
   align,
   side = 'bottom',
   disabled = false,
+  title
 }: MenuDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" disabled={disabled}>
+        <Button variant="outline" size="sm" disabled={disabled} title={title}>
           {trigger}
         </Button>
       </DropdownMenuTrigger>

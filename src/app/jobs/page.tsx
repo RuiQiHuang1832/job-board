@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import useIsMobile from '@/hooks/useIsMobile'
 
 import { useJobOperations, useJobSearch } from './hooks'
@@ -91,21 +92,42 @@ function JobsPageContent() {
           <h1>
             <Stack align="start" direction="row">
               <div>🌱</div>
-              <div className="text-green-600 sm:block hidden"> GreenRevolution</div>
+              <div className="text-green-500 sm:block hidden"> GreenRevolution</div>
             </Stack>
           </h1>
           <Stack>
-            <Button className="relative" title="Saved Jobs" variant="outline" size="lg">
-              <BsBookmark className="size-[1.1rem]" />
-              <Badge className="absolute -top-2 -right-2">21</Badge>
-            </Button>
-            <Button className="relative" title="Hidden Jobs" variant="outline" size="lg">
-              <GoTrash className="size-[1.4rem]" />
-              <Badge className="absolute -top-2 -right-2">7</Badge>
-            </Button>
-            <Button className="bg-blue-500" variant="link" title="Post a Job" size="lg">
-              <BsFillSignpost2Fill color="white" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button className="relative size-11" variant="outline">
+                  <BsBookmark className="size-[1.1rem]" />
+                  <Badge className="absolute -top-2 -right-2">21</Badge>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Saved Jobs</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button className="relative size-11" variant="outline">
+                  <GoTrash className="size-[1.3rem]" />
+                  <Badge className="absolute -top-2 -right-2">7</Badge>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Hidden Jobs</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button className="bg-blue-500 size-11" variant="link">
+                  <BsFillSignpost2Fill className="size-[1.2rem]" color="white" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Post a Job</p>
+              </TooltipContent>
+            </Tooltip>
           </Stack>
         </Stack>
         <div className="mb-5">
@@ -155,6 +177,7 @@ function JobsPageContent() {
               <Stack gap={2}>
                 <div>73,600 total jobs</div>
                 <MenuDropdown
+                  title="Sort by"
                   disabled={searchResults.length === 0}
                   trigger={<FaSortAmountDown />}
                   content={
@@ -162,7 +185,6 @@ function JobsPageContent() {
                       onValueChange={(value) => handleSortChange(value as SortOrder)}
                       items={radioFormOptions}
                       value={sortOrder}
-                      title="Sort by"
                     />
                   }
                   align="end"
