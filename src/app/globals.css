@@ -144,10 +144,7 @@
     @apply text-sm leading-none font-medium;
   }
 
-  ul {
-    @apply my-6 ml-6 list-disc [&>li]:mt-2;
-  }
-  blockquote  {
-    @apply mt-6 border-l-2 pl-6 italic
+  blockquote {
+    @apply mt-6 border-l-2 pl-6 italic;
   }
 }
