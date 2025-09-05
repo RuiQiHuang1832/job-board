@@ -3,6 +3,7 @@
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
 import { IoClose } from 'react-icons/io5'
 import { MdLocationPin } from 'react-icons/md'
+import { toast } from 'sonner'
 
 import { CompanyAvatar as Avatar, BaseJobProps } from '@/app/jobs/shared'
 import { Button } from '@/components/ui/button'
@@ -33,11 +34,23 @@ export default function JobCard(props: JobCardProps) {
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.stopPropagation()
+    if (props.saved) {
+      toast.info('Removed from Saved Jobs', {
+        position: 'top-center',
+      })
+    } else {
+      toast.success('Added to Saved Jobs', {
+        position: 'top-center',
+      })
+    }
     props.onJobSave?.(props.id)
   }
 
   const handleCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation()
+    toast.info('Job Hidden', {
+      position: 'top-center',
+    })
     props.onJobHide?.(props.id)
   }
 
@@ -78,7 +91,7 @@ export default function JobCard(props: JobCardProps) {
               onClick={handleBookmarkClick}
               variant="ghost"
               className="!px-2"
-              title="Save this job"
+              title={props.saved ? 'Remove from saved jobs' : 'Save this job'}
               aria-label={props.saved ? 'Remove from saved jobs' : 'Save this job'}
             >
               {props.saved ? (
