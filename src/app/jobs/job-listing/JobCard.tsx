@@ -1,7 +1,8 @@
 'use client'
 
-import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
-import { IoClose } from 'react-icons/io5'
+import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu'
+import { useRef, useState } from 'react'
+import { BiSolidDownArrow } from 'react-icons/bi'
 import { MdLocationPin } from 'react-icons/md'
 import { toast } from 'sonner'
 
@@ -15,43 +16,65 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Stack } from '@/components/ui/stack'
 import { Tag } from '@/components/ui/tag'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 
 interface JobCardProps extends BaseJobProps {
-  isSelected: boolean
-  saved: boolean
-  onJobClick: (id: string) => void
-  onJobHide: (id: string) => void
-  onJobSave: (id: string) => void
+  isSelected?: boolean
+  saved?: boolean
+  applied?: boolean
+  onJobClick?: (id: string) => void
+  onJobHide?: (id: string) => void
+  onJobSave?: (id: string) => void
+  onJobApply?: (id: string) => void
 }
+type Checked = DropdownMenuCheckboxItemProps['checked']
 
 export default function JobCard(props: JobCardProps) {
+  const [applied, setApplied] = useState<Checked>(props.applied)
+  const [saved, setSaved] = useState<Checked>(props.saved)
+  const [hide, setHide] = useState<Checked>(false)
+
+  const triggerRef = useRef<HTMLButtonElement>(null)
   const handleCardClick = () => {
     props.onJobClick?.(props.id)
   }
 
-  const handleBookmarkClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (props.saved) {
-      toast.info('Removed from Saved Jobs', {
-        position: 'top-center',
-      })
+  const handleBookmarkClick = (nextChecked: Checked) => {
+    setSaved(nextChecked)
+    const isSaved = nextChecked === true
+    if (isSaved) {
+      toast.success('Added to Saved Jobs', { position: 'top-center' })
     } else {
-      toast.success('Added to Saved Jobs', {
-        position: 'top-center',
-      })
+      toast.info('Removed from Saved Jobs', { position: 'top-center' })
     }
     props.onJobSave?.(props.id)
   }
 
-  const handleCloseClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    toast.info('Job Hidden', {
-      position: 'top-center',
-    })
-    props.onJobHide?.(props.id)
+  const handleCloseClick = (nextChecked: Checked) => {
+    setHide(nextChecked)
+    if (nextChecked === true) {
+      toast.info('Job Hidden', { position: 'top-center' })
+      props.onJobHide?.(props.id)
+    }
+  }
+  const handleJobApply = (nextChecked: Checked) => {
+    setApplied(nextChecked)
+    if (nextChecked === true) {
+      toast.info('Job Applied', { position: 'top-center' })
+      props.onJobApply?.(props.id)
+    }
   }
 
   return (
@@ -86,29 +109,43 @@ export default function JobCard(props: JobCardProps) {
           </Stack>
         </CardDescription>
         <CardAction className="w-full">
-          <Stack direction="col">
-            <Button
-              onClick={handleBookmarkClick}
-              variant="ghost"
-              className="!px-2"
-              title={props.saved ? 'Remove from saved jobs' : 'Save this job'}
-              aria-label={props.saved ? 'Remove from saved jobs' : 'Save this job'}
+          <DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button ref={triggerRef} size="icon" variant="outline" aria-label="Job actions">
+                    <BiSolidDownArrow className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent side="top">Job Actions</TooltipContent>
+            </Tooltip>
+
+            <DropdownMenuContent
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+              onCloseAutoFocus={(e) => {
+                e.preventDefault() // don't refocus the trigger
+                triggerRef.current?.blur() // drop focus so tooltip won't open
+              }}
+              className="w-56"
+              align="start"
             >
-              {props.saved ? (
-                <BsBookmarkFill className="size-[1.4rem]" />
-              ) : (
-                <BsBookmark className="size-[1.4rem]" />
-              )}
-            </Button>
-            <Button
-              onClick={handleCloseClick}
-              variant="ghost"
-              className="!px-2"
-              title="Hide this job"
-            >
-              <IoClose className="size-[1.5rem]" />
-            </Button>
-          </Stack>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuCheckboxItem checked={applied} onCheckedChange={handleJobApply}>
+                  Mark as Applied
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked={saved} onCheckedChange={handleBookmarkClick}>
+                  Save Job
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked={hide} onCheckedChange={handleCloseClick}>
+                  Hide Job
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-3">

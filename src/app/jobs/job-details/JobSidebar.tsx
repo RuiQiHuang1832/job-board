@@ -25,7 +25,10 @@ import { cn } from '@/lib/utils'
 import styles from './JobSidebar.module.css'
 
 export default function JobSidebar(
-  props: DetailedJobWithUIState & { hideDueToMobile?: boolean; hideDetails?: boolean },
+  props: DetailedJobWithUIState & {
+    hideDueToMobile?: boolean
+    hideDetails?: boolean
+  },
 ) {
   const [isExpanded, setIsExpanded] = useState(false)
   const { hideDetails, hideDueToMobile } = props
@@ -54,7 +57,7 @@ export default function JobSidebar(
           </Stack>
         </CardDescription>
         <CardAction>
-          <Button variant="default">
+          <Button>
             {props.isHidden ? (
               <>
                 <FaEyeSlash></FaEyeSlash>Hidden
@@ -68,6 +71,7 @@ export default function JobSidebar(
           </Button>
         </CardAction>
       </CardHeader>
+
       {/* flex-1: takes remaining height of PARENT, flex flex-col: vertical layout, justify-between: pushes content to top/bottom ( used for shorter descriptions) */}
       <CardContent className="overflow-y-auto space-y-5 flex-1 flex flex-col justify-between">
         <div className={cn('whitespace-pre-wrap', !isExpanded && 'line-clamp-[18]')}>

@@ -1,9 +1,11 @@
 'use client'
+import Link from 'next/link'
 import { Suspense, useState } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 import { BsBookmark, BsFillSignpost2Fill } from 'react-icons/bs'
 import { FaSortAmountDown } from 'react-icons/fa'
 import { FaArrowLeftLong } from 'react-icons/fa6'
+import { FiCheckCircle } from 'react-icons/fi'
 import { GoTrash } from 'react-icons/go'
 
 import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
@@ -36,10 +38,12 @@ function JobsPageContent() {
     savedJobs,
     hiddenJobs,
     activeJobId,
+    appliedJobs,
     isLoading,
     handleJobSave,
     handleJobHide,
     handleActiveJobCard,
+    handleJobApply,
   } = useJobOperations(jobListings)
   const {
     searchResults,
@@ -87,20 +91,35 @@ function JobsPageContent() {
   return (
     <div className=" max-w-[90rem] mx-auto p-5">
       {/* Search Section */}
-      <div className="">
+      <div>
         <Stack className="mb-8" justify="between" align="center">
           <h1>
             <Stack align="start" direction="row">
               <div>🌱</div>
-              <div className="text-green-500 sm:block hidden"> GreenRevolution</div>
+              <div className="text-green-500 sm:block hidden">GreenRevolution</div>
             </Stack>
           </h1>
           <Stack>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="relative size-11" variant="outline">
-                  <BsBookmark className="size-[1.1rem]" />
-                  <Badge className="absolute -top-2 -right-2">21</Badge>
+                <Button className="relative p-5" variant="outline" size="icon" asChild>
+                  <Link href="/jobs/applied">
+                    <FiCheckCircle className="size-[1.1rem]" />
+                    <Badge className="absolute -top-2 -right-2">{appliedJobs.size}</Badge>
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Applied Jobs</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button className="relative p-5" variant="outline" size="icon">
+                  <Link href="/jobs/saved">
+                    <BsBookmark className="size-[1.1rem]" />
+                    <Badge className="absolute -top-2 -right-2">{savedJobs.size}</Badge>
+                  </Link>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -109,9 +128,11 @@ function JobsPageContent() {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="relative size-11" variant="outline">
-                  <GoTrash className="size-[1.3rem]" />
-                  <Badge className="absolute -top-2 -right-2">7</Badge>
+                <Button className="relative p-5" variant="outline" size="icon">
+                  <Link href="/jobs/hidden">
+                    <GoTrash className="size-[1.3rem]" />
+                    <Badge className="absolute -top-2 -right-2">{hiddenJobs.size}</Badge>
+                  </Link>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -120,7 +141,7 @@ function JobsPageContent() {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="bg-blue-500 size-11" variant="link">
+                <Button className="bg-blue-500 p-5" variant="link" size="icon">
                   <BsFillSignpost2Fill className="size-[1.2rem]" color="white" />
                 </Button>
               </TooltipTrigger>
@@ -225,7 +246,9 @@ function JobsPageContent() {
                     {...jobDetails}
                     onJobHide={handleJobHide}
                     onJobSave={handleJobSave}
+                    onJobApply={handleJobApply}
                     saved={savedJobs.has(jobDetails.id)}
+                    applied={appliedJobs.has(jobDetails.id)}
                   />
                 ),
               )
