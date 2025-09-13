@@ -42,7 +42,7 @@ export default function JobSidebar(
 
   return (
     <Card
-      className={`${hideDueToMobile && 'hidden'} ${hideDetails && 'border-0 shadow-none'} w-full h-auto lg:h-[calc(100vh-calc(1.25rem*2))] lg:sticky top-5 flex-1 md:py-6 py-1`}
+      className={`${hideDueToMobile && 'hidden'} ${hideDetails && 'border-0 shadow-none'} w-full h-auto lg:h-[calc(100vh-calc(1.25rem*2))] lg:sticky top-5 flex-1 py-6 `}
     >
       <CardHeader>
         <CardTitle className="text-2xl">{props.title}</CardTitle>
@@ -65,7 +65,7 @@ export default function JobSidebar(
             ) : (
               <>
                 <FaExternalLinkAlt></FaExternalLinkAlt>
-                {!hideDetails && 'Apply Now'}
+                <span className="sm:inline hidden">Apply Now</span>
               </>
             )}
           </Button>

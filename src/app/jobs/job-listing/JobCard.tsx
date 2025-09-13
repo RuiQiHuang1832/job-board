@@ -1,7 +1,6 @@
 'use client'
 
-import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { BiSolidDownArrow } from 'react-icons/bi'
 import { MdLocationPin } from 'react-icons/md'
 import { toast } from 'sonner'
@@ -34,47 +33,40 @@ interface JobCardProps extends BaseJobProps {
   isSelected?: boolean
   saved?: boolean
   applied?: boolean
+  hidden?: boolean
   onJobClick?: (id: string) => void
   onJobHide?: (id: string) => void
   onJobSave?: (id: string) => void
   onJobApply?: (id: string) => void
 }
-type Checked = DropdownMenuCheckboxItemProps['checked']
 
 export default function JobCard(props: JobCardProps) {
-  const [applied, setApplied] = useState<Checked>(props.applied)
-  const [saved, setSaved] = useState<Checked>(props.saved)
-  const [hide, setHide] = useState<Checked>(false)
+  const applied = props.applied
+  const saved = props.saved
+  const hidden = props.hidden
 
   const triggerRef = useRef<HTMLButtonElement>(null)
   const handleCardClick = () => {
     props.onJobClick?.(props.id)
   }
-
-  const handleBookmarkClick = (nextChecked: Checked) => {
-    setSaved(nextChecked)
-    const isSaved = nextChecked === true
-    if (isSaved) {
-      toast.success('Added to Saved Jobs', { position: 'top-center' })
-    } else {
-      toast.info('Removed from Saved Jobs', { position: 'top-center' })
-    }
+  const handleSaveClick = () => {
+    const next = !saved
+    if (next) toast.success('Added to Saved Jobs', { position: 'top-center' })
+    else toast.info('Removed from Saved Jobs', { position: 'top-center' })
     props.onJobSave?.(props.id)
   }
 
-  const handleCloseClick = (nextChecked: Checked) => {
-    setHide(nextChecked)
-    if (nextChecked === true) {
+  const handleHideClick = () => {
+    const next = !hidden
+    if (next) {
       toast.info('Job Hidden', { position: 'top-center' })
-      props.onJobHide?.(props.id)
     }
+    props.onJobHide?.(props.id)
   }
-  const handleJobApply = (nextChecked: Checked) => {
-    setApplied(nextChecked)
-    if (nextChecked === true) {
-      toast.info('Job Applied', { position: 'top-center' })
-      props.onJobApply?.(props.id)
-    }
+  const handleJobApply = () => {
+    const next = !applied
+    if (next) toast.info('Job Applied', { position: 'top-center' })
+    props.onJobApply?.(props.id)
   }
 
   return (
@@ -113,7 +105,13 @@ export default function JobCard(props: JobCardProps) {
             <Tooltip>
               <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
-                  <Button ref={triggerRef} size="icon" variant="outline" aria-label="Job actions">
+                  <Button
+                    onClick={(e) => e.stopPropagation()}
+                    ref={triggerRef}
+                    size="icon"
+                    variant="outline"
+                    aria-label="Job actions"
+                  >
                     <BiSolidDownArrow className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -137,10 +135,10 @@ export default function JobCard(props: JobCardProps) {
                 <DropdownMenuCheckboxItem checked={applied} onCheckedChange={handleJobApply}>
                   Mark as Applied
                 </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={saved} onCheckedChange={handleBookmarkClick}>
+                <DropdownMenuCheckboxItem checked={saved} onCheckedChange={handleSaveClick}>
                   Save Job
                 </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={hide} onCheckedChange={handleCloseClick}>
+                <DropdownMenuCheckboxItem checked={hidden} onCheckedChange={handleHideClick}>
                   Hide Job
                 </DropdownMenuCheckboxItem>
               </DropdownMenuGroup>

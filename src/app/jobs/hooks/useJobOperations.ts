@@ -1,7 +1,7 @@
+import { useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 
 import { useURLParams } from '@/app/jobs/hooks'
-import { DetailedJobProps } from '@/app/jobs/shared'
 
 type JobFlags = { saved?: true; hidden?: true; applied?: true }
 type Store = Record<string, JobFlags>
@@ -68,11 +68,10 @@ const reducer = (state: Store, action: Action): Store => {
   }
 }
 
-export const useJobOperations = (allJobs: readonly DetailedJobProps[]) => {
-  const { updateURL, getParam } = useURLParams()
-  const [activeJobId, setActiveJobId] = useState<string>(
-    allJobs.find((job) => job.id === getParam('id'))?.id || '0',
-  )
+export const useJobOperations = () => {
+  const { updateURL } = useURLParams()
+  const searchParams = useSearchParams()
+  const activeJobId = searchParams.get('id') || ''
   const [isLoading] = useState(false)
   const [state, dispatch] = useReducer(reducer, {})
   const writeTimer = useRef<number | null>(null)
@@ -161,21 +160,12 @@ export const useJobOperations = (allJobs: readonly DetailedJobProps[]) => {
 
   const handleActiveJobCard = useCallback(
     (id: string) => {
-      setActiveJobId(id)
+      if (id === activeJobId) return
+
       updateURL({ id })
     },
-    [updateURL],
+    [updateURL, activeJobId],
   )
-
-  // ONLY react to history traversal - optimization
-  useEffect(() => {
-    const onPopState = () => {
-      const id = new URLSearchParams(window.location.search).get('id') || '1'
-      setActiveJobId(id)
-    }
-    window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
-  }, [])
 
   return {
     savedJobs,

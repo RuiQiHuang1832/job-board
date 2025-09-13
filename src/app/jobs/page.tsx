@@ -44,7 +44,7 @@ function JobsPageContent() {
     handleJobHide,
     handleActiveJobCard,
     handleJobApply,
-  } = useJobOperations(jobListings)
+  } = useJobOperations()
   const {
     searchResults,
     sortOrder,
@@ -64,7 +64,6 @@ function JobsPageContent() {
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
   const isMobile = useIsMobile()
-
   const [showMobileDetail, setShowMobileDetail] = useState(false)
 
   if (isMobile && showMobileDetail && activeJob) {
@@ -248,6 +247,7 @@ function JobsPageContent() {
                     onJobSave={handleJobSave}
                     onJobApply={handleJobApply}
                     saved={savedJobs.has(jobDetails.id)}
+                    hidden={hiddenJobs.has(jobDetails.id)}
                     applied={appliedJobs.has(jobDetails.id)}
                   />
                 ),

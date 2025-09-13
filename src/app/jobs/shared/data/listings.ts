@@ -1,4 +1,6 @@
-export const jobListings = [
+import { DetailedJobProps } from '../types'
+
+export const jobListings: DetailedJobProps[] = [
   {
     id: '0',
     title: 'Senior UX Designer',
@@ -185,3 +187,7 @@ With millions of listings in over 220 countries, we’re redefining hospitality.
     onsite: false,
   },
 ] as const
+
+export const jobListingsMap: Map<string, DetailedJobProps> = new Map(
+  jobListings.map((j) => [j.id, j]),
+)
