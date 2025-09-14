@@ -88,7 +88,7 @@ function JobsPageContent() {
   }
 
   return (
-    <div className=" max-w-[90rem] mx-auto p-5">
+    <div>
       {/* Search Section */}
       <div>
         <Stack className="mb-8" justify="between" align="center">

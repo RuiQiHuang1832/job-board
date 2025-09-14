@@ -1,5 +1,6 @@
 'use client'
 import { notFound, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 
 import { JobSidebar } from '@/app/jobs/job-details'
@@ -7,7 +8,15 @@ import { jobListingsMap } from '@/app/jobs/shared'
 import { Button } from '@/components/ui/button'
 import { Stack } from '@/components/ui/stack'
 
-export default function Page() {
+export default function ViewPage() {
+  return (
+    <Suspense>
+      <Page />
+    </Suspense>
+  )
+}
+
+export function Page() {
   const searchParams = useSearchParams()
   const activeJobId = searchParams.get('id') || ''
   const activeJob = jobListingsMap.get(activeJobId)

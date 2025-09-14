@@ -1,7 +1,6 @@
 'use client'
 import { usePathname, useRouter } from 'next/navigation'
 import { Fragment, useMemo } from 'react'
-import { AiOutlineHome } from 'react-icons/ai'
 
 import { useJobOperations } from '@/app/jobs/hooks'
 import { JobCard } from '@/app/jobs/job-listing'
@@ -39,15 +38,12 @@ export default function MyJobsClient({ status }: { status: Status }) {
     useJobOperations()
 
   return (
-    <div className="container mx-auto px-5">
-      <Button onClick={() => router.push('/jobs')}>
-        <AiOutlineHome size="3rem" className="mt-3"></AiOutlineHome>
-      </Button>
+    <div>
       <Stack justify="center" className="mb-10">
-        <div>
-          <div className="space-y-1">
+        <div className="text-center">
+          <Button variant="ghost" onClick={() => router.push('/jobs')} className="space-y-1 hover:bg-white">
             <h1>My Jobs</h1>
-          </div>
+          </Button>
           <Separator className="my-4" />
           <Stack align="center" className="h-7 space-x-1">
             {VALID.map((s, i) => (
