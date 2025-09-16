@@ -41,11 +41,15 @@ export default function MyJobsClient({ status }: { status: Status }) {
     <div>
       <Stack justify="center" className="mb-10">
         <div className="text-center">
-          <Button variant="ghost" onClick={() => router.push('/jobs')} className="space-y-1 hover:bg-white">
+          <Button
+            variant="ghost"
+            onClick={() => router.push('/jobs')}
+            className="space-y-1 hover:bg-white"
+          >
             <h1>My Jobs</h1>
           </Button>
           <Separator className="my-4" />
-          <Stack align="center" className="h-7 space-x-1">
+          <Stack align="center" gap={2} className="h-10 space-x-1 flex-nowrap sm:gap-4">
             {VALID.map((s, i) => (
               <Fragment key={s}>
                 {i > 0 && <Separator orientation="vertical" />}
@@ -64,7 +68,7 @@ export default function MyJobsClient({ status }: { status: Status }) {
           </Stack>
         </div>
       </Stack>
-      <Stack justify="center" className="w-[50%] mx-auto">
+      <Stack justify="center" className="sm:w-[clamp(576px,50%,900px)] mx-auto">
         {filtered.length === 0 ? (
           <div className="h-[50vh] flex items-center">All clear! Nothing here at the moment.</div>
         ) : (

@@ -16,7 +16,7 @@ export default function ViewPage() {
   )
 }
 
-export function Page() {
+function Page() {
   const searchParams = useSearchParams()
   const activeJobId = searchParams.get('id') || ''
   const activeJob = jobListingsMap.get(activeJobId)
