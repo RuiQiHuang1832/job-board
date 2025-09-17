@@ -38,7 +38,7 @@ export default function MyJobsClient({ status }: { status: Status }) {
     useJobOperations()
 
   return (
-    <div>
+    <div className="max-w-[90rem] mx-auto p-5">
       <Stack justify="center" className="mb-10">
         <div className="text-center">
           <Button

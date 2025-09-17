@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useTransition } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
 import { BsBookmark, BsFillSignpost2Fill } from 'react-icons/bs'
 import { FaSortAmountDown } from 'react-icons/fa'
@@ -11,9 +11,10 @@ import { GoTrash } from 'react-icons/go'
 import { JobSidebar, JobSidebarSkeleton } from '@/app/jobs/job-details'
 import { JobFilter } from '@/app/jobs/job-filter'
 import { EmptyState, JobCard } from '@/app/jobs/job-listing'
+import { JobsPager } from '@/app/jobs/Pagination'
 import { LocationSearch } from '@/app/jobs/search'
 import { DetailedJobProps, SortOrder, jobListings, radioFormOptions } from '@/app/jobs/shared'
-import Skeleton from '@/app/jobs/skeleton'
+import Skeleton from '@/app/jobs/Skeleton'
 import IconInput from '@/components/common/IconInput'
 import MenuDropdown from '@/components/common/MenuDropdown'
 import { RadioForm } from '@/components/common/RadioForm'
@@ -23,6 +24,7 @@ import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import useIsMobile from '@/hooks/useIsMobile'
+import { usePagination } from '@/hooks/usePagination'
 
 import { useJobOperations, useJobSearch } from './hooks'
 
@@ -54,12 +56,18 @@ function JobsPageContent() {
     searchValue,
     locationValue,
     filters,
-    clearAll,
+    handleClearAllFilters,
     handleSearch,
     handleSortChange,
     handleFilterChange,
     isHydrated,
   } = useJobSearch(jobListings)
+  const [isPaginating, startTransition] = useTransition()
+
+  const { pageIndex, totalPages, current, setPage } = usePagination(displayedJobs, {
+    size: 4,
+  })
+
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
@@ -86,9 +94,8 @@ function JobsPageContent() {
       </Stack>
     )
   }
-
   return (
-    <div>
+    <div className="max-w-[90rem] mx-auto p-5">
       {/* Search Section */}
       <div>
         <Stack className="mb-8" justify="between" align="center">
@@ -182,9 +189,13 @@ function JobsPageContent() {
         </Stack>
       </div>
       {/* Filters */}
-      <JobFilter updateFilter={handleFilterChange} filterState={filters} clearAll={clearAll} />
+      <JobFilter
+        updateFilter={handleFilterChange}
+        filterState={filters}
+        clearAll={handleClearAllFilters}
+      />
       {/* Job Results */}
-      {!isHydrated ? (
+      {!isHydrated  ||  isPaginating ? (
         <Skeleton />
       ) : (
         <Stack align="start" className="gap-x-6">
@@ -211,10 +222,10 @@ function JobsPageContent() {
                 ></MenuDropdown>
               </Stack>
             </Stack>
-            {displayedJobs.length === 0 ? (
+            {current.length === 0 ? (
               <EmptyState keyword={searchInputRef.current?.value} />
             ) : (
-              displayedJobs.map((jobDetails) =>
+              current.map((jobDetails) =>
                 hiddenJobs.has(jobDetails.id) ? (
                   <Stack
                     key={jobDetails.id}
@@ -253,6 +264,11 @@ function JobsPageContent() {
                 ),
               )
             )}
+            <JobsPager
+              page={pageIndex}
+              totalPages={totalPages}
+              onPageChange={(p) => startTransition(() => setPage(p))} // <-- wrap in transition
+            />
           </div>
           {isLoading ? (
             <JobSidebarSkeleton />

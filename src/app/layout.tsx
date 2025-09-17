@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className={`max-w-[90rem] mx-auto p-5 antialiased`}>
+      <body className={` antialiased`}>
         {children}
         <Toaster richColors theme="light" />
       </body>

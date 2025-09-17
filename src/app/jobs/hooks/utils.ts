@@ -25,7 +25,7 @@ export const sort = (rows: SearchResult[], order: SortOrder) => {
 
 
 export const topJobs = (allJobs: readonly DetailedJobProps[]) =>
-  allJobs.slice(0, 6).map((job) => ({
+  allJobs.slice(0, 12).map((job) => ({
     id: job.id,
     score: 1,
     pay: job.pay ? parseInt(job.pay.split('–')[0].replace(/[$,]/g, '')) : 0,

@@ -186,6 +186,180 @@ With millions of listings in over 220 countries, we’re redefining hospitality.
     valuation: '$90B',
     onsite: false,
   },
+  {
+    id: '6',
+    title: 'Full Stack Developer',
+    company: 'Airbnb',
+    daysPosted: 40,
+    location: 'San Francisco, CA',
+    pay: '$200,000–$260,000',
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
+    jobType: 'Full-time',
+    education: 'High School',
+    description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
+
+You’ll write clean, scalable code in Node.js, React, and PostgreSQL, and collaborate across teams to deliver new features and maintain platform reliability. You should be comfortable jumping between backend and frontend and enjoy working with product teams to shape functionality.
+
+Key Responsibilities:
+• Develop features end-to-end using React and Node.js
+• Improve platform performance, test coverage, and observability
+• Collaborate with design, product, and data teams
+• Support continuous deployment and CI/CD workflows`,
+    companyDescription: `
+Airbnb is a global platform that allows people to list, discover, and book unique places to stay.
+We aim to create a world where anyone can belong anywhere through meaningful travel.
+With millions of listings in over 220 countries, we’re redefining hospitality.
+    `,
+    employeeCount: 6500,
+    private: false,
+    valuation: '$90B',
+    onsite: false,
+  },
+  {
+    id: '7',
+    title: 'Full Stack Developer',
+    company: 'Airbnb',
+    daysPosted: 40,
+    location: 'San Francisco, CA',
+    pay: '$200,000–$260,000',
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
+    jobType: 'Full-time',
+    education: 'High School',
+    description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
+
+You’ll write clean, scalable code in Node.js, React, and PostgreSQL, and collaborate across teams to deliver new features and maintain platform reliability. You should be comfortable jumping between backend and frontend and enjoy working with product teams to shape functionality.
+
+Key Responsibilities:
+• Develop features end-to-end using React and Node.js
+• Improve platform performance, test coverage, and observability
+• Collaborate with design, product, and data teams
+• Support continuous deployment and CI/CD workflows`,
+    companyDescription: `
+Airbnb is a global platform that allows people to list, discover, and book unique places to stay.
+We aim to create a world where anyone can belong anywhere through meaningful travel.
+With millions of listings in over 220 countries, we’re redefining hospitality.
+    `,
+    employeeCount: 6500,
+    private: false,
+    valuation: '$90B',
+    onsite: false,
+  },
+  {
+    id: '8',
+    title: 'Full Stack Developer',
+    company: 'Airbnb',
+    daysPosted: 40,
+    location: 'San Francisco, CA',
+    pay: '$200,000–$260,000',
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
+    jobType: 'Full-time',
+    education: 'High School',
+    description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
+
+You’ll write clean, scalable code in Node.js, React, and PostgreSQL, and collaborate across teams to deliver new features and maintain platform reliability. You should be comfortable jumping between backend and frontend and enjoy working with product teams to shape functionality.
+
+Key Responsibilities:
+• Develop features end-to-end using React and Node.js
+• Improve platform performance, test coverage, and observability
+• Collaborate with design, product, and data teams
+• Support continuous deployment and CI/CD workflows`,
+    companyDescription: `
+Airbnb is a global platform that allows people to list, discover, and book unique places to stay.
+We aim to create a world where anyone can belong anywhere through meaningful travel.
+With millions of listings in over 220 countries, we’re redefining hospitality.
+    `,
+    employeeCount: 6500,
+    private: false,
+    valuation: '$90B',
+    onsite: false,
+  },
+  {
+    id: '9',
+    title: 'Full Stack Developer',
+    company: 'Airbnb',
+    daysPosted: 40,
+    location: 'San Francisco, CA',
+    pay: '$200,000–$260,000',
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
+    jobType: 'Full-time',
+    education: 'High School',
+    description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
+
+You’ll write clean, scalable code in Node.js, React, and PostgreSQL, and collaborate across teams to deliver new features and maintain platform reliability. You should be comfortable jumping between backend and frontend and enjoy working with product teams to shape functionality.
+
+Key Responsibilities:
+• Develop features end-to-end using React and Node.js
+• Improve platform performance, test coverage, and observability
+• Collaborate with design, product, and data teams
+• Support continuous deployment and CI/CD workflows`,
+    companyDescription: `
+Airbnb is a global platform that allows people to list, discover, and book unique places to stay.
+We aim to create a world where anyone can belong anywhere through meaningful travel.
+With millions of listings in over 220 countries, we’re redefining hospitality.
+    `,
+    employeeCount: 6500,
+    private: false,
+    valuation: '$90B',
+    onsite: false,
+  },
+  {
+    id: '10',
+    title: 'Full Stack Developer',
+    company: 'Airbnb',
+    daysPosted: 40,
+    location: 'San Francisco, CA',
+    pay: '$200,000–$260,000',
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
+    jobType: 'Full-time',
+    education: 'High School',
+    description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
+
+You’ll write clean, scalable code in Node.js, React, and PostgreSQL, and collaborate across teams to deliver new features and maintain platform reliability. You should be comfortable jumping between backend and frontend and enjoy working with product teams to shape functionality.
+
+Key Responsibilities:
+• Develop features end-to-end using React and Node.js
+• Improve platform performance, test coverage, and observability
+• Collaborate with design, product, and data teams
+• Support continuous deployment and CI/CD workflows`,
+    companyDescription: `
+Airbnb is a global platform that allows people to list, discover, and book unique places to stay.
+We aim to create a world where anyone can belong anywhere through meaningful travel.
+With millions of listings in over 220 countries, we’re redefining hospitality.
+    `,
+    employeeCount: 6500,
+    private: false,
+    valuation: '$90B',
+    onsite: false,
+  },
+  {
+    id: '11',
+    title: 'Full Stack Developer',
+    company: 'Airbnb',
+    daysPosted: 40,
+    location: 'San Francisco, CA',
+    pay: '$200,000–$260,000',
+    tags: ['Remote', 'Full Stack', 'Node.js', 'Equity', 'Node.js', 'Equity'],
+    jobType: 'Full-time',
+    education: 'High School',
+    description: `Airbnb is hiring a Full Stack Developer to help build tools that empower hosts and improve the guest experience. You’ll work on a wide range of systems—from internal dashboards to core user-facing flows.
+
+You’ll write clean, scalable code in Node.js, React, and PostgreSQL, and collaborate across teams to deliver new features and maintain platform reliability. You should be comfortable jumping between backend and frontend and enjoy working with product teams to shape functionality.
+
+Key Responsibilities:
+• Develop features end-to-end using React and Node.js
+• Improve platform performance, test coverage, and observability
+• Collaborate with design, product, and data teams
+• Support continuous deployment and CI/CD workflows`,
+    companyDescription: `
+Airbnb is a global platform that allows people to list, discover, and book unique places to stay.
+We aim to create a world where anyone can belong anywhere through meaningful travel.
+With millions of listings in over 220 countries, we’re redefining hospitality.
+    `,
+    employeeCount: 6500,
+    private: false,
+    valuation: '$90B',
+    onsite: false,
+  },
 ] as const
 
 export const jobListingsMap: Map<string, DetailedJobProps> = new Map(

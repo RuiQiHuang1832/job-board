@@ -109,6 +109,16 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
     updateFilter(key, value)
     syncURLWithState({ [key]: value })
   }
+  const handleClearAllFilters = () => {
+    clearAll()
+    syncURLWithState({
+      jobType: '',
+      salary: '',
+      education: '',
+      daysPosted: '',
+    })
+  }
+ 
   // Sort will only trigger when Search is populated
   const displayedJobs = useMemo(() => {
     if (state.searchResults.length == 0) {
@@ -182,6 +192,6 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
     handleSortChange,
     handleFilterChange,
     isHydrated,
-    clearAll
+    handleClearAllFilters,
   }
 }
