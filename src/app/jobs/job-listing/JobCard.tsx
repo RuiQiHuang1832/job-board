@@ -40,6 +40,12 @@ interface JobCardProps extends BaseJobProps {
   onJobApply?: (id: string) => void
 }
 
+const removed = [
+  'About Flexport:',
+  'Who we are',
+  'We’re helping businesses become more sustainable. Join us!',
+]
+
 export default function JobCard(props: JobCardProps) {
   const applied = props.applied
   const saved = props.saved
@@ -68,7 +74,15 @@ export default function JobCard(props: JobCardProps) {
     if (next) toast.info('Job Applied', { position: 'top-center' })
     props.onJobApply?.(props.id)
   }
-
+  const decoded =
+    stripPhrases(props.description ?? '', removed)
+      ?.replace(/&lt;/g, '<')
+      ?.replace(/&gt;/g, '>')
+      ?.replace(/&amp;/g, '&')
+      ?.replace(/&quot;/g, '"')
+      ?.replace(/&nbsp;/g, ' ')
+      ?.replace(/<h[1-4]\b[^>]*>/gi, '<p>')
+      ?.replace(/<\/h[1-4]\s*>/gi, '</p>') ?? ''?.replace(/<br>/g, '')
   return (
     <Card
       onClick={handleCardClick}
@@ -97,7 +111,7 @@ export default function JobCard(props: JobCardProps) {
         <CardDescription className="text-gray-500 mt-2 text-sm">
           <Stack gap={1}>
             <MdLocationPin size="15px" />
-            {props.location} · {formatRangeToK(props.pay)}
+            {props.location} {props.pay && ` · ${formatRangeToK(props.pay)}`}
           </Stack>
         </CardDescription>
         <CardAction className="w-full">
@@ -152,19 +166,43 @@ export default function JobCard(props: JobCardProps) {
             <Tag key={index}>{tag}</Tag>
           ))}
         </Stack>
-        <div className="line-clamp-2">{props.description}</div>
+        <div
+          className="prose max-w-none line-clamp-2"
+          dangerouslySetInnerHTML={{ __html: decoded }}
+        />
       </CardContent>
     </Card>
   )
 }
 
+function stripPhrases(text: string, phrases: string[]): string {
+  return phrases.reduce((acc, phrase) => acc.replace(new RegExp(phrase, 'gi'), ''), text).trim()
+}
 function formatRangeToK(input: string): string {
-  const parts = input.match(/\$?([\d,]+)[–-]\$?([\d,]+)/)
-  if (!parts) return ''
+  // capture "$181-$290K", "$120,000 - $135,000", etc.
+  const parts = input.match(/\$?([\d,.]+)\s*[–-]\s*\$?([\d,.]+)\s*(k|K)?/)
 
-  const [, startStr, endStr] = parts
-  const start = Math.round(parseInt(startStr.replace(/,/g, '')) / 1000)
-  const end = Math.round(parseInt(endStr.replace(/,/g, '')) / 1000)
+  if (!parts) return input
 
-  return `$${start}k-$${end}k`
+  const [, startStr, endStr, suffix] = parts
+
+  // normalize to numbers
+  let start = parseFloat(startStr.replace(/,/g, ''))
+  let end = parseFloat(endStr.replace(/,/g, ''))
+
+  // if they wrote "K" explicitly, scale up
+  if (suffix) {
+    start *= 1000
+    end *= 1000
+  }
+
+  // convert to K units
+  const startK = Math.round(start / 1000)
+  const endK = Math.round(end / 1000)
+
+  if (startK <= 0) {
+    return `Up to $${endK}k`
+  }
+
+  return `$${startK}k-$${endK}k`
 }

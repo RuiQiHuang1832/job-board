@@ -1,4 +1,3 @@
-
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 
 import { useSyncURLWithState, useURLParams } from '@/app/jobs/hooks'
@@ -118,18 +117,27 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
       daysPosted: '',
     })
   }
- 
+
   // Sort will only trigger when Search is populated
   const displayedJobs = useMemo(() => {
-    if (state.searchResults.length == 0) {
+    const ids = state.searchValue || state.locationValue ? state.searchResults : topJobs(allJobs)
+
+    if (ids.length === 0) {
       return []
     }
 
-    const filter_id = applyFilter(allJobs, state.searchResults, filters)
+    const filter_id = applyFilter(allJobs, ids, filters)
     const sorted_id = sort(filter_id, state.sortOrder)
     const results = sorted_id.map(({ id }) => allJobs.find((job) => job.id === id))
     return results as DetailedJobProps[]
-  }, [allJobs, state.searchResults, filters, state.sortOrder])
+  }, [
+    allJobs,
+    state.searchResults,
+    filters,
+    state.sortOrder,
+    state.locationValue,
+    state.searchValue,
+  ])
 
   // ONLY react to history traversal (back and forth) - optimization
   useEffect(() => {

@@ -31,11 +31,11 @@ const colorPairs = {
 
 const letterColorMap: Record<string, keyof typeof colorPairs> = {
   A: 'destructive',
-  B: 'destructive',
+  B: 'primary',
   C: 'destructive',
   D: 'destructive',
   E: 'destructive',
-  F: 'destructive',
+  F: 'success',
   G: 'success',
   H: 'success',
   I: 'success',

@@ -17,6 +17,8 @@ export interface DetailedJobProps extends BaseJobProps {
   private?: boolean
   valuation?: string
   onsite: boolean
+  url: string
+  companyUrl: string
 }
 
 interface JobUIState {

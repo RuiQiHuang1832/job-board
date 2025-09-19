@@ -13,7 +13,7 @@ import { JobFilter } from '@/app/jobs/job-filter'
 import { EmptyState, JobCard } from '@/app/jobs/job-listing'
 import { JobsPager } from '@/app/jobs/Pagination'
 import { LocationSearch } from '@/app/jobs/search'
-import { DetailedJobProps, SortOrder, jobListings, radioFormOptions } from '@/app/jobs/shared'
+import { DetailedJobProps, SortOrder, radioFormOptions } from '@/app/jobs/shared'
 import Skeleton from '@/app/jobs/Skeleton'
 import IconInput from '@/components/common/IconInput'
 import MenuDropdown from '@/components/common/MenuDropdown'
@@ -24,6 +24,7 @@ import { Input } from '@/components/ui/input'
 import { Stack } from '@/components/ui/stack'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import useIsMobile from '@/hooks/useIsMobile'
+import { useJobs } from '@/hooks/useJobs'
 import { usePagination } from '@/hooks/usePagination'
 
 import { useJobOperations, useJobSearch } from './hooks'
@@ -36,19 +37,18 @@ export default function JobsPage() {
   )
 }
 function JobsPageContent() {
+  const { jobs, isLoading, total } = useJobs()
   const {
     savedJobs,
     hiddenJobs,
     activeJobId,
     appliedJobs,
-    isLoading,
     handleJobSave,
     handleJobHide,
     handleActiveJobCard,
     handleJobApply,
   } = useJobOperations()
   const {
-    searchResults,
     sortOrder,
     searchInputRef,
     locationSearchRef,
@@ -61,11 +61,11 @@ function JobsPageContent() {
     handleSortChange,
     handleFilterChange,
     isHydrated,
-  } = useJobSearch(jobListings)
+  } = useJobSearch(jobs)
   const [isPaginating, startTransition] = useTransition()
 
   const { pageIndex, totalPages, current, setPage } = usePagination(displayedJobs, {
-    size: 4,
+    size: 15,
   })
 
   const activeJob =
@@ -147,8 +147,10 @@ function JobsPageContent() {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button className="bg-blue-500 p-5" variant="link" size="icon">
-                  <BsFillSignpost2Fill className="size-[1.2rem]" color="white" />
+                <Button size="icon" className="bg-blue-500 p-5" variant="link">
+                  <Link href="/contact?subject=post" className="">
+                    <BsFillSignpost2Fill className="size-[1.2rem]" color="white" />
+                  </Link>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -195,7 +197,7 @@ function JobsPageContent() {
         clearAll={handleClearAllFilters}
       />
       {/* Job Results */}
-      {!isHydrated  ||  isPaginating ? (
+      {!isHydrated || isPaginating ? (
         <Skeleton />
       ) : (
         <Stack align="start" className="gap-x-6">
@@ -206,10 +208,10 @@ function JobsPageContent() {
                 {locationSearchRef.current ? `in ${locationSearchRef.current}` : 'near you'}
               </div>
               <Stack gap={2}>
-                <div>73,600 total jobs</div>
+                <div>{total} total jobs</div>
                 <MenuDropdown
                   title="Sort by"
-                  disabled={searchResults.length === 0}
+                  disabled={displayedJobs.length === 0}
                   trigger={<FaSortAmountDown />}
                   content={
                     <RadioForm

@@ -4,9 +4,10 @@ import { Suspense } from 'react'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 
 import { JobSidebar } from '@/app/jobs/job-details'
-import { jobListingsMap } from '@/app/jobs/shared'
+import { DetailedJobProps } from '@/app/jobs/shared/types/types'
 import { Button } from '@/components/ui/button'
 import { Stack } from '@/components/ui/stack'
+import { useJobs } from '@/hooks/useJobs'
 
 export default function ViewPage() {
   return (
@@ -17,6 +18,8 @@ export default function ViewPage() {
 }
 
 function Page() {
+  const { jobs } = useJobs()
+  const jobListingsMap: Map<string, DetailedJobProps> = new Map(jobs.map((j) => [j.id, j]))
   const searchParams = useSearchParams()
   const activeJobId = searchParams.get('id') || ''
   const activeJob = jobListingsMap.get(activeJobId)

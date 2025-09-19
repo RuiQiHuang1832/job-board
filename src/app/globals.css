@@ -153,4 +153,26 @@
   blockquote {
     @apply mt-6 border-l-2 pl-6 italic;
   }
+
+  .default p {
+    @apply mt-3;
+  }
+}
+.prose a {
+  text-decoration: underline;
+}
+.job-description ul {
+  list-style-type: disc;
+  padding-left: 1.5rem; /* space for bullets */
+  margin-bottom: 1rem;
+}
+
+.job-description ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.job-description li {
+  margin-bottom: 0.25rem;
 }

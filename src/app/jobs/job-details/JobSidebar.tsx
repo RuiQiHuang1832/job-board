@@ -32,6 +32,15 @@ export default function JobSidebar(
 ) {
   const [isExpanded, setIsExpanded] = useState(false)
   const { hideDetails, hideDueToMobile } = props
+  const decoded =
+    props.description
+      ?.replace(/&lt;/g, '<')
+      ?.replace(/&gt;/g, '>')
+      ?.replace(/&amp;/g, '&')
+      ?.replace(/&quot;/g, '"')
+      ?.replace(/&nbsp;/g, ' ')
+      ?.replace(/<h[1-4]\b[^>]*>/gi, '<p>')
+      ?.replace(/<\/h[1-4]\s*>/gi, '</p>') ?? ''?.replace(/<br>/g, '')
   const companyMetadata: Array<{ icon: React.ComponentType; value: string | number | undefined }> =
     [
       { icon: HiOutlineBuildingOffice2, value: props.location },
@@ -51,10 +60,12 @@ export default function JobSidebar(
           {props.onsite ? 'On-site' : 'Remote'}
         </CardDescription>
         <CardDescription className="text-emerald-600 font-semibold">
-          <Stack gap={2} className="text-base">
-            <LiaMoneyBillWaveSolid size="20px"></LiaMoneyBillWaveSolid>
-            {props.pay}
-          </Stack>
+          {props.pay && (
+            <Stack gap={2} className="text-base">
+              <LiaMoneyBillWaveSolid size="20px"></LiaMoneyBillWaveSolid>
+              {props.pay}
+            </Stack>
+          )}
         </CardDescription>
         <CardAction>
           <Button>
@@ -65,7 +76,9 @@ export default function JobSidebar(
             ) : (
               <>
                 <FaExternalLinkAlt></FaExternalLinkAlt>
-                <span className="sm:inline hidden">Apply Now</span>
+                <Link target="_blank" href={props.url} className="sm:inline hidden">
+                  Apply Now
+                </Link>
               </>
             )}
           </Button>
@@ -74,8 +87,11 @@ export default function JobSidebar(
 
       {/* flex-1: takes remaining height of PARENT, flex flex-col: vertical layout, justify-between: pushes content to top/bottom ( used for shorter descriptions) */}
       <CardContent className="overflow-y-auto space-y-5 flex-1 flex flex-col justify-between">
-        <div className={cn('whitespace-pre-wrap', !isExpanded && 'line-clamp-[18]')}>
-          {props.description}
+        <div className={cn('', !isExpanded && 'line-clamp-[18]')}>
+          <div
+            className="prose job-description prose-neutral max-w-none default"
+            dangerouslySetInnerHTML={{ __html: decoded }}
+          />
         </div>
         <div className={cn('relative', !isExpanded && styles['job-gradient'])}>
           <Button
@@ -97,12 +113,16 @@ export default function JobSidebar(
               <Stack gap={2} className="text-sm text-blue-600 ">
                 <Stack gap={1}>
                   <FaExternalLinkAlt />
-                  <Link href="/">Website</Link>
+                  <Link target="_blank" href={props.companyUrl}>
+                    Website
+                  </Link>
                 </Stack>
                 {['Overview', 'Salaries', 'Benefits'].map((label) => (
                   <Fragment key={label}>
                     {' · '}
-                    <Link href="/">{label}</Link>
+                    <Link target="_blank" href={`${props.companyUrl}careers`}>
+                      {label}
+                    </Link>
                   </Fragment>
                 ))}
               </Stack>

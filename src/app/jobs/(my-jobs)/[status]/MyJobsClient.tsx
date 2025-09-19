@@ -4,20 +4,21 @@ import { Fragment, useMemo } from 'react'
 
 import { useJobOperations } from '@/app/jobs/hooks'
 import { JobCard } from '@/app/jobs/job-listing'
-import { DetailedJobProps, jobListings } from '@/app/jobs/shared'
+import { DetailedJobProps } from '@/app/jobs/shared'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Stack } from '@/components/ui/stack'
+import { useJobs } from '@/hooks/useJobs'
 
 import useLocalStorageIds from './useLocalStorageIds'
-
 const VALID = ['applied', 'saved', 'hidden'] as const
 type Status = (typeof VALID)[number]
 
 export default function MyJobsClient({ status }: { status: Status }) {
   const router = useRouter()
   const pathname = usePathname()
+  const { jobs } = useJobs()
 
   const handleRouterChange = (value: string) => {
     const target = `/jobs/${value}`
@@ -31,8 +32,8 @@ export default function MyJobsClient({ status }: { status: Status }) {
 
   const { idsSet } = useLocalStorageIds(status)
   const filtered: DetailedJobProps[] = useMemo(
-    () => jobListings.filter((j) => idsSet.has(j.id)),
-    [idsSet],
+    () => jobs.filter((j) => idsSet.has(j.id)),
+    [idsSet, jobs],
   )
   const { savedJobs, hiddenJobs, appliedJobs, handleJobSave, handleJobHide, handleJobApply } =
     useJobOperations()

@@ -1,5 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -21,19 +23,28 @@ import { Textarea } from '@/components/ui/textarea'
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.email('Enter a valid email'),
-  subject: z.enum(['general', 'support', 'feedback', 'partnership'], {
+  subject: z.enum(['general', 'support', 'feedback', 'partnership', 'post a job'], {
     message: 'Please choose a subject',
   }),
   message: z.string().min(20, 'Message must be at least 20 characters'),
 })
-export default function Contact() {
+export default function ContactPage() {
+  return (
+    <Suspense>
+      <Contact />
+    </Suspense>
+  )
+}
+function Contact() {
+  const searchParams = useSearchParams()
+  const subjectParam = searchParams.get('subject')
   // Define the form using react-hook-form and integrate Zod for validation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       email: '',
-      subject: undefined,
+      subject: subjectParam == 'post' ? 'post a job' : undefined,
       message: '',
     },
   })
@@ -63,6 +74,7 @@ export default function Contact() {
                     { value: 'support', label: 'Support' },
                     { value: 'feedback', label: 'Feedback' },
                     { value: 'partnership', label: 'Partnership' },
+                    { value: 'post a job', label: 'Post a Job' },
                   ]}
                   placeholder="Select a subject"
                   onValueChange={field.onChange}
