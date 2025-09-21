@@ -70,11 +70,6 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   const searchInputRef = useRef<HTMLInputElement>(null)
   const [isHydrated, setIsHydrated] = useState(false)
 
-  useEffect(() => {
-    const t = window.setTimeout(() => setIsHydrated(true), 0)
-    return () => window.clearTimeout(t)
-  }, [])
-
   //TODO: Eventually remove this part, and instead do DEFAULT_SEARCH_QUERY + DEFAULT_LOCATION, RIGHT NOW IT TAKES TOP 6, as noted in NOTES.md
 
   // ✅ Single function that syncs ALL current state to URL
@@ -121,8 +116,9 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   // Sort will only trigger when Search is populated
   const displayedJobs = useMemo(() => {
     const ids = state.searchValue || state.locationValue ? state.searchResults : topJobs(allJobs)
-
+    setIsHydrated(true)
     if (ids.length === 0) {
+      setIsHydrated(false) // Reset hydration to avoid showing "no results" too early
       return []
     }
 
