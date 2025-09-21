@@ -43,12 +43,11 @@ const init = (args: {
   const initialQuery = getParam('q') || ''
   const initialLocation = getParam('location') || ''
   const initialSort = (getParam('sort') as SortOrder) || 'relevance'
-
+  //SWR guarantees allJobs is ready
   const initialSearchIDs =
     initialQuery || initialLocation
       ? search(allJobs, initialQuery, initialLocation)
       : topJobs(allJobs)
-
   return {
     searchValue: initialQuery,
     locationValue: initialLocation,
@@ -82,9 +81,9 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   })
 
   const handleSearch = () => {
+    console.log('Searching...')
     const locationValue = locationSearchRef.current || ''
     const query = searchInputRef.current?.value || ''
-
     if (!query && !locationValue) {
       dispatch({ type: 'SET_SEARCH_RESULTS', payload: topJobs(allJobs) })
       return
@@ -92,6 +91,8 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
     syncURLWithState()
     // Search keyword + Location
     const results = search(allJobs, query, abbreviateLocation(locationValue))
+    dispatch({ type: 'SET_SEARCH_VALUE', payload: query })
+
     dispatch({ type: 'SET_SEARCH_RESULTS', payload: results })
   }
   // Clean functions without URL side effects
@@ -117,7 +118,10 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   const displayedJobs = useMemo(() => {
     const ids = state.searchValue || state.locationValue ? state.searchResults : topJobs(allJobs)
     setIsHydrated(true)
-    if (ids.length === 0) {
+    if (ids.length === 0 && (state.searchValue || state.locationValue)) {
+      return []
+    } else if (ids.length === 0 && !(state.searchValue || state.locationValue)) {
+      // On first load + no search, show top jobs
       setIsHydrated(false) // Reset hydration to avoid showing "no results" too early
       return []
     }
@@ -126,14 +130,7 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
     const sorted_id = sort(filter_id, state.sortOrder)
     const results = sorted_id.map(({ id }) => allJobs.find((job) => job.id === id))
     return results as DetailedJobProps[]
-  }, [
-    allJobs,
-    state.searchResults,
-    filters,
-    state.sortOrder,
-    state.locationValue,
-    state.searchValue,
-  ])
+  }, [state, allJobs, filters])
 
   // ONLY react to history traversal (back and forth) - optimization
   useEffect(() => {

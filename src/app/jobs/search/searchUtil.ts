@@ -14,7 +14,11 @@ const weight = {
   description: 1,
 } as const
 
-export function search(jobs: readonly DetailedJobProps[], query: string, location: string): SearchResult[] {
+export function search(
+  jobs: readonly DetailedJobProps[],
+  query: string,
+  location: string,
+): SearchResult[] {
   // Normalize query
   const q = normalize(query || '')
   // Tokenize query
@@ -45,7 +49,6 @@ export function search(jobs: readonly DetailedJobProps[], query: string, locatio
         break // stop checking this job
       }
     }
-
     // If all tokens matched, calculate score
     if (matches) {
       let score = 0

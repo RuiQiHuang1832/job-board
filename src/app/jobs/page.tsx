@@ -30,14 +30,29 @@ import { usePagination } from '@/hooks/usePagination'
 import { useJobOperations, useJobSearch } from './hooks'
 
 export default function JobsPage() {
+    const { jobs, isLoading, total } = useJobs()
+
   return (
-    <Suspense>
-      <JobsPageContent />
+    <Suspense >
+      {/* <— show a loader while SWR suspends */}
+      <JobsPageContent
+        key={jobs.length > 0 ? 'ready' : 'boot'} // ← remount once when data arrives
+        jobs={jobs}
+        isLoading={isLoading}
+        total={total}
+      />
     </Suspense>
   )
 }
-function JobsPageContent() {
-  const { jobs, isLoading, total } = useJobs()
+function JobsPageContent({
+  jobs,
+  isLoading,
+  total,
+}: {
+  jobs: DetailedJobProps[]
+  isLoading: boolean
+  total: number
+}) {
   const {
     savedJobs,
     hiddenJobs,
@@ -224,7 +239,7 @@ function JobsPageContent() {
                 ></MenuDropdown>
               </Stack>
             </Stack>
-            {current.length === 0 ? (
+            {current.length === 0 && !isLoading ? (
               <EmptyState keyword={searchInputRef.current?.value} />
             ) : (
               current.map((jobDetails) =>

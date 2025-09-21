@@ -7,7 +7,7 @@ export default function Skeleton() {
   return (
     <Stack align="start" className="gap-x-6">
       <div className={`grid gap-6 lg:w-xl w-full `}>
-        <Stack justify="between" className="animate-pulse   w-full">
+        <Stack justify="between" className="animate-pulse  w-full">
           <div className={`w-1/4 h-4 rounded bg-muted`}></div>
           <div className={`w-1/4 h-4 rounded bg-muted`}></div>
         </Stack>

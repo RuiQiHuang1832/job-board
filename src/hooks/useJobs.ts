@@ -12,7 +12,7 @@ const fetcher = (url: string) =>
   })
 
 export function useJobs() {
-  const { data, error, isLoading } = useSWR<ApiResp>('/api/jobs', fetcher, {
+  const { data, error, isLoading } = useSWR<ApiResp>('/api/jobs', fetcher, {  suspense: false,              // <— enable suspense
     revalidateOnFocus: false,
     dedupingInterval: 60_000, // 1 min: any component asking within a minute shares the cache
   })
