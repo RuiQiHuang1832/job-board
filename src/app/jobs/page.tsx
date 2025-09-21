@@ -71,7 +71,7 @@ function JobsPageContent() {
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile(1165)
   const [showMobileDetail, setShowMobileDetail] = useState(false)
 
   if (isMobile && showMobileDetail && activeJob) {

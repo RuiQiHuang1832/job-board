@@ -68,16 +68,18 @@ export default function JobSidebar(
           )}
         </CardDescription>
         <CardAction>
-          <Button>
+          <Button className="px-3">
             {props.isHidden ? (
               <>
                 <FaEyeSlash></FaEyeSlash>Hidden
               </>
             ) : (
               <>
-                <FaExternalLinkAlt></FaExternalLinkAlt>
-                <Link target="_blank" href={props.url} className="sm:inline hidden">
-                  Apply Now
+                <Link target="_blank" href={props.url}>
+                  <Stack gap={2}>
+                    <FaExternalLinkAlt></FaExternalLinkAlt>
+                    <span className="sm:inline hidden">Apply Now</span>
+                  </Stack>
                 </Link>
               </>
             )}
