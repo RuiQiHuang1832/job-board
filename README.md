@@ -8,7 +8,7 @@ Includes job search, filtering, pagination, and persistent save/dismiss function
 
 [job-board-rho-one.vercel.app/jobs](https://job-board-rho-one.vercel.app/jobs)
 
----
+
 
 ## ✨ Features
 
@@ -20,7 +20,7 @@ Includes job search, filtering, pagination, and persistent save/dismiss function
 - **Job State Management** – save, dismiss, and track applied jobs (persistent)
 - **Modern UI** – styled with TailwindCSS + shadcn/ui
 
----
+
 
 ## 📸 Screenshots
 
@@ -34,7 +34,7 @@ _JobMatch home page with search and filters._
 
 _Search results._
 
----
+
 
 ## 🛠️ Tech Stack
 
@@ -43,7 +43,7 @@ _Search results._
 - **State Management:** React hooks + localStorage persistence
 - **Deployment:** Vercel (with custom domain)
 
----
+
 
 ## 🚀 Getting Started
 
@@ -56,7 +56,7 @@ npm install
 npm run dev
 ```
 
----
+
 
 ## 📊 Data Source
 
@@ -64,13 +64,13 @@ Snapshot captured on 9/22/2025 from public Greenhouse pages.
 
 One-off script kept private to avoid ToS churn; happy to share on request.
 
----
+
 
 ## 📄 Status
 
 Project complete & deployed — ongoing polish and feature experiments.
 
----
+
 
 ## 🔮 Future Ideas
 
