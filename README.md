@@ -1,42 +1,70 @@
-# job-board
+# JobMatch – Job Board Web App | Next.js, TypeScript, TailwindCSS
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A fully-featured job board demonstrating advanced state management, polished UI/UX, and deployment to production.
+Includes job search, filtering, pagination, and persistent save/dismiss functionality.
 
-## Getting Started
+🌐 Live Demo: [job-board-rho-one.vercel.app/job](https://job-board-rho-one.vercel.app/job)
 
-First, run the development server:
+---
+
+## ✨ Features
+
+- 🔍 **Search, Filter & Sort** – quickly find jobs by keyword, location, or type
+- ↩️ **URL & Back Navigation** – smooth browsing with preserved search state
+- ⚡ **Error Handling & Loading States** – skeletons, spinners, and “No Results” messages for clean UX
+- 📱 **Mobile Responsive** – optimized layouts for all screen sizes
+- 📑 **Pagination** – handles large job sets gracefully
+- 💾 **Job State Management** – save, dismiss, and track applied jobs (persistent)
+- 🎨 **Modern UI** – styled with TailwindCSS + shadcn/ui
+
+---
+
+## 📸 Screenshots
+
+![Home Page](./public/screenshots/home.png)
+_JobMatch home page with search and filters._
+
+![Search Functionality](./public/screenshots/homeWithSearch.png)
+_Search results._
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Frontend:** React, TypeScript, TailwindCSS, shadcn/ui
+- **State Management:** React hooks + localStorage persistence
+- **Deployment:** Vercel (with custom domain)
+
+---
+
+## 🚀 Getting Started
+
+Clone the repo and install dependencies:
 
 ```bash
+git clone https://github.com/yourusername/jobmatch.git
+cd jobmatch
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📊 Data Source
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Snapshot captured on 9/22/2025 from public Greenhouse pages. One-off script kept private to avoid ToS churn; happy to share on request.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 Status
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Project complete & deployed — ongoing polish and feature experiments.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔮 Future Ideas
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Data Source
-
-Snapshot captured on 9/19/2025 from public Greenhouse pages. One-off script kept private to avoid ToS churn; happy to share on request.
+- Real-time job scraping with APIs
+- Authentication & user accounts
+- Admin dashboard for job posting
