@@ -13,17 +13,11 @@ Includes job search, filtering, pagination, and persistent save/dismiss function
 ## ✨ Features
 
 - **Search, Filter & Sort** – quickly find jobs by keyword, location, or type
-
 - **URL & Back Navigation** – smooth browsing with preserved search state
-
 - **Error Handling & Loading States** – skeletons, spinners, and “No Results” messages for clean UX
-
 - **Mobile Responsive** – optimized layouts for all screen sizes
-
 - **Pagination** – handles large job sets gracefully
-
 - **Job State Management** – save, dismiss, and track applied jobs (persistent)
-
 - **Modern UI** – styled with TailwindCSS + shadcn/ui
 
 ---
@@ -45,11 +39,8 @@ _Search results._
 ## 🛠️ Tech Stack
 
 - **Framework:** Next.js (App Router)
-
 - **Frontend:** React, TypeScript, TailwindCSS, shadcn/ui
-
 - **State Management:** React hooks + localStorage persistence
-
 - **Deployment:** Vercel (with custom domain)
 
 ---
@@ -84,7 +75,5 @@ Project complete & deployed — ongoing polish and feature experiments.
 ## 🔮 Future Ideas
 
 - Real-time job scraping with APIs
-
 - Authentication & user accounts
-
 - Admin dashboard for job posting
