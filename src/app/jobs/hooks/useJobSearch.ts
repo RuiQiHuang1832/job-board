@@ -81,7 +81,6 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
   })
 
   const handleSearch = () => {
-    console.log('Searching...')
     const locationValue = locationSearchRef.current || ''
     const query = searchInputRef.current?.value || ''
     if (!query && !locationValue) {
@@ -92,7 +91,7 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
     // Search keyword + Location
     const results = search(allJobs, query, abbreviateLocation(locationValue))
     dispatch({ type: 'SET_SEARCH_VALUE', payload: query })
-
+    dispatch({ type: 'SET_LOCATION_VALUE', payload: locationValue })
     dispatch({ type: 'SET_SEARCH_RESULTS', payload: results })
   }
   // Clean functions without URL side effects

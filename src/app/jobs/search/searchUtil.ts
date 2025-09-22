@@ -59,7 +59,9 @@ export function search(
         if (f.description.includes(t)) score += weight.description
       }
       // Only add to results if location matches (or no location filter)
-      const locationMatches = !location || job.location === location
+      const locationMatches =
+        !location || job.location.toLowerCase().includes(location.toLowerCase())
+
       if (locationMatches) {
         rows.push({
           id: job.id,

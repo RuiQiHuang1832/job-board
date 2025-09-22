@@ -49,6 +49,7 @@ export function AutocompleteSearch({
   }, [value])
 
   const selectOption = (option: optionsType) => {
+    resetSelection()
     setInputValue(option.label)
     onSelect?.(option)
     setOpen(false)

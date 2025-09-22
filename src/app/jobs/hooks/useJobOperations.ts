@@ -26,7 +26,6 @@ const reducer = (state: Store, action: Action): Store => {
       } else {
         s.saved = true
       }
-      console.log(s)
       if (Object.keys(s).length === 0) {
         delete next[action.id]
       } else {

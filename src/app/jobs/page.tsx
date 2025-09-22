@@ -30,10 +30,10 @@ import { usePagination } from '@/hooks/usePagination'
 import { useJobOperations, useJobSearch } from './hooks'
 
 export default function JobsPage() {
-    const { jobs, isLoading, total } = useJobs()
+  const { jobs, isLoading, total } = useJobs()
 
   return (
-    <Suspense >
+    <Suspense>
       {/* <— show a loader while SWR suspends */}
       <JobsPageContent
         key={jobs.length > 0 ? 'ready' : 'boot'} // ← remount once when data arrives
@@ -86,7 +86,7 @@ function JobsPageContent({
   const activeJob =
     displayedJobs.find((job: DetailedJobProps) => job.id === activeJobId) || undefined
 
-  const isMobile = useIsMobile(1165)
+  const isMobile = useIsMobile()
   const [showMobileDetail, setShowMobileDetail] = useState(false)
 
   if (isMobile && showMobileDetail && activeJob) {
@@ -116,8 +116,8 @@ function JobsPageContent({
         <Stack className="mb-8" justify="between" align="center">
           <h1>
             <Stack align="start" direction="row">
-              <div>🌱</div>
-              <div className="text-green-500 sm:block hidden">GreenRevolution</div>
+              <div>📋</div>
+              <div className=" sm:block hidden">JobMatch</div>
             </Stack>
           </h1>
           <Stack>
@@ -175,35 +175,45 @@ function JobsPageContent({
           </Stack>
         </Stack>
         <div className="mb-5">
-          <h3>Find Sustainability Jobs. Drive the Green Revolution.</h3>
+          <h3>Work With Purpose. Grow With Opportunity.</h3>
         </div>
-        <Stack gap={4} className="mb-4 lg:flex-row flex-col">
-          <div className="lg:flex-1/2 w-full">
-            <IconInput icon={AiOutlineSearch}>
-              <Input
-                className="pl-10"
-                type="text"
-                size="lg"
-                placeholder="Search jobs, keywords, company"
-                ref={searchInputRef}
-                defaultValue={searchValue}
-              />
-            </IconInput>
-          </div>
-          <div className="lg:flex-3 w-full">
-            <IconInput icon={AiOutlineEnvironment}>
-              <LocationSearch
-                onLocationSelect={(selectedLocation) => {
-                  locationSearchRef.current = selectedLocation
-                }}
-                value={locationValue}
-              />
-            </IconInput>
-          </div>
-          <Button onClick={handleSearch} className="lg:w-auto w-full" variant="default" size="lg">
-            Search
-          </Button>
-        </Stack>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault() // stop page reload
+            handleSearch()
+          }}
+        >
+          <Stack gap={4} className="mb-4 lg:flex-row flex-col">
+            <div className="lg:flex-1/2 w-full">
+              <IconInput icon={AiOutlineSearch}>
+                <Input
+                  className="pl-10"
+                  type="text"
+                  size="lg"
+                  placeholder="Search jobs, keywords, company"
+                  ref={searchInputRef}
+                  defaultValue={searchValue}
+                />
+              </IconInput>
+            </div>
+            <div className="lg:flex-3 w-full">
+              <IconInput icon={AiOutlineEnvironment}>
+                <LocationSearch
+                  onLocationSelect={(selectedLocation) => {
+                    locationSearchRef.current = selectedLocation
+                  }}
+                  onLocationInputChange={(input) => {
+                    locationSearchRef.current = input
+                  }}
+                  value={locationValue}
+                />
+              </IconInput>
+            </div>
+            <Button type="submit" className="lg:w-auto w-full" variant="default" size="lg">
+              Search
+            </Button>
+          </Stack>
+        </form>
       </div>
       {/* Filters */}
       <JobFilter

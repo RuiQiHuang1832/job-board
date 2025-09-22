@@ -17,16 +17,22 @@ type LocationIQResponse = {
 
 interface LocationSearchProps {
   onLocationSelect: (location: string) => void
+  onLocationInputChange?: (input: string) => void
   value: string
 }
 
-export function LocationSearch({ onLocationSelect, value }: LocationSearchProps) {
+export function LocationSearch({
+  onLocationSelect,
+  onLocationInputChange,
+  value,
+}: LocationSearchProps) {
   const [locations, setLocations] = useState<Location[]>([])
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState<boolean>(false)
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
   const handleInputChange = (value: string) => {
     setInputValue(value)
+    onLocationInputChange?.(value)
   }
 
   // Debounce the input value
@@ -99,7 +105,7 @@ export function LocationSearch({ onLocationSelect, value }: LocationSearchProps)
   return (
     <AutocompleteSearch
       options={locations}
-      placeholder="Enter location or 'remote'"
+      placeholder="Enter location"
       onInputChange={handleInputChange}
       onSelect={handleLocationSelect}
       inputClassName="pl-10"

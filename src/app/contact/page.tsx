@@ -48,12 +48,11 @@ function Contact() {
       message: '',
     },
   })
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit() {
     toast.success('Message submitted! Please allow 3 - 5 business days for a response.', {
       position: 'top-center',
     })
     form.reset()
-    console.log(values)
   }
   return (
     <section aria-labelledby="contact-title" className="max-w-3xl mx-auto px-4 py-8 space-y-5 ">

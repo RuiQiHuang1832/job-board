@@ -42,7 +42,8 @@ export function applyFilter(
     if (filters.salary && filters.salary !== 'all') {
       const salaryMinFilter = parseInt(filters.salary) * 1000
       const jobSalaryMin = parseInt(job.pay.split('–')[0].replace(/[$,]/g, ''))
-      if (jobSalaryMin < salaryMinFilter) {
+
+      if (jobSalaryMin < salaryMinFilter || isNaN(jobSalaryMin)) {
         passesFilters = false
         continue
       }

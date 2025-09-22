@@ -44,6 +44,8 @@ const removed = [
   'About Flexport:',
   'Who we are',
   'We’re helping businesses become more sustainable. Join us!',
+  'About Pinterest:',
+  'Thumbtack helps millions of people confidently care for their homes.',
 ]
 
 export default function JobCard(props: JobCardProps) {
@@ -167,7 +169,7 @@ export default function JobCard(props: JobCardProps) {
           ))}
         </Stack>
         <div
-          className="prose max-w-none line-clamp-2"
+          className="prose max-w-none line-clamp-2 !overflow-clip"
           dangerouslySetInnerHTML={{ __html: decoded }}
         />
       </CardContent>

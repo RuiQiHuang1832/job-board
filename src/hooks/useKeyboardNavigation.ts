@@ -12,7 +12,7 @@ export function useKeyboardNavigation({ itemCount, onSelect }: UseKeyboardNaviga
     setSelectedIndex(-1)
   }, [])
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
       e.preventDefault()
     }
@@ -26,6 +26,9 @@ export function useKeyboardNavigation({ itemCount, onSelect }: UseKeyboardNaviga
       case 'Enter':
         if (selectedIndex >= 0 && selectedIndex < itemCount) {
           onSelect(selectedIndex)
+        } else {
+          // No option selected → treat Enter as a normal form submit
+          e.currentTarget.form?.requestSubmit()
         }
         break
       case 'Escape':
