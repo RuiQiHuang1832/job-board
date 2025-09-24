@@ -8,6 +8,14 @@ import Footer from './jobs/Footer'
 export const metadata: Metadata = {
   title: 'JobMatch - Your Next Career Starts Here',
   description: 'Your Next Job Starts Here',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({
@@ -17,6 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={GeistSans.className}>
+
       <body className={` antialiased`}>
         {/* Sticky Footer */}
         <div className="min-h-dvh grid grid-rows-[1fr_auto]">
