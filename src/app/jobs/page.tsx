@@ -1,4 +1,5 @@
 'use client'
+import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { Suspense, useState, useTransition } from 'react'
 import { AiOutlineEnvironment, AiOutlineSearch } from 'react-icons/ai'
@@ -88,6 +89,8 @@ function JobsPageContent({
 
   const isMobile = useIsMobile()
   const [showMobileDetail, setShowMobileDetail] = useState(false)
+  // Give search a transition
+  const [isSearching, startSearch] = useTransition()
 
   if (isMobile && showMobileDetail && activeJob) {
     return (
@@ -180,7 +183,7 @@ function JobsPageContent({
         <form
           onSubmit={(e) => {
             e.preventDefault() // stop page reload
-            handleSearch()
+            startSearch(() => handleSearch())
           }}
         >
           <Stack gap={4} className="mb-4 lg:flex-row flex-col">
@@ -209,8 +212,16 @@ function JobsPageContent({
                 />
               </IconInput>
             </div>
-            <Button type="submit" className="lg:w-auto w-full" variant="default" size="lg">
-              Search
+
+            <Button
+              type="submit"
+              disabled={isSearching}
+              className="lg:w-auto w-full disabled:opacity-50"
+              variant="default"
+              size="lg"
+            >
+              {isSearching && <Loader2 className=" animate-spin" />}
+              {isSearching ? 'Searching…' : 'Search'}
             </Button>
           </Stack>
         </form>

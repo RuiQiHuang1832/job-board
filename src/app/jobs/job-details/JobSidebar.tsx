@@ -32,6 +32,8 @@ export default function JobSidebar(
 ) {
   const [isExpanded, setIsExpanded] = useState(false)
   const { hideDetails, hideDueToMobile } = props
+  
+  // Clean up HTML entities and heading tags in job description
   const decoded =
     props.description
       ?.replace(/&lt;/g, '<')

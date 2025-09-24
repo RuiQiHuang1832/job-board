@@ -20,7 +20,7 @@ interface LocationSearchProps {
   onLocationInputChange?: (input: string) => void
   value: string
 }
-
+// Able to take selected Value + input change
 export function LocationSearch({
   onLocationSelect,
   onLocationInputChange,
@@ -30,6 +30,7 @@ export function LocationSearch({
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState<boolean>(false)
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
+  //Take input change (can take custom input)
   const handleInputChange = (value: string) => {
     setInputValue(value)
     onLocationInputChange?.(value)
@@ -97,7 +98,7 @@ export function LocationSearch({
         setError(true)
       })
   }, [debouncedInputValue])
-
+  // Take selected option
   const handleLocationSelect = (selectedOption: Location) => {
     onLocationSelect(selectedOption.label)
   }

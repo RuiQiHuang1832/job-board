@@ -18,18 +18,18 @@ export function useJobFilters(initialArg: InitArg) {
     const provided = typeof initialArg === 'function' ? initialArg() : initialArg
     return { ...empty, ...provided }
   })
-
+  //Single filter update
   const updateFilter = useCallback((key: FilterKey, value: string) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
     }))
   }, [])
-
+  //Multiple filter update
   const updateFilters = useCallback((patch: Partial<FilterState>) => {
     setFilters((prev) => ({ ...prev, ...patch }))
   }, [])
-
+  // Clear all filters
   const clearAll = () => {
     setFilters(emptyFilters)
   }

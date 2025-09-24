@@ -39,7 +39,7 @@ interface JobCardProps extends BaseJobProps {
   onJobSave?: (id: string) => void
   onJobApply?: (id: string) => void
 }
-
+// Remove the first occurrence of these phrases from job description in JobCard
 const removed = [
   'About Flexport:',
   'Who we are',

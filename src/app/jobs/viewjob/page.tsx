@@ -16,7 +16,7 @@ export default function ViewPage() {
     </Suspense>
   )
 }
-
+// Specific Job View
 function Page() {
   const { jobs } = useJobs()
   const jobListingsMap: Map<string, DetailedJobProps> = new Map(jobs.map((j) => [j.id, j]))

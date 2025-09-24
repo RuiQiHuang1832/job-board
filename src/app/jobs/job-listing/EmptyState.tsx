@@ -1,4 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
+
+// Empty state for no job results
 export default function EmptyState({ keyword }: { keyword: string | undefined }) {
   return (
     <div className="">

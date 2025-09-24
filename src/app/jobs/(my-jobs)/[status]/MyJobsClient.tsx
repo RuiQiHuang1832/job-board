@@ -15,6 +15,7 @@ import useLocalStorageIds from './useLocalStorageIds'
 const VALID = ['applied', 'saved', 'hidden'] as const
 type Status = (typeof VALID)[number]
 
+// The "My Jobs" client component that displays jobs based on their status (applied, saved, hidden)
 export default function MyJobsClient({ status }: { status: Status }) {
   const router = useRouter()
   const pathname = usePathname()

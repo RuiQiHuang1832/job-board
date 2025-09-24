@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 
 import type { DetailedJobProps as Job } from '@/app/jobs/shared/types/types'
-
+// Consume route /api/jobs
 type ApiResp = { jobs: Job[]; total: number }
 const fetcher = (url: string) =>
   fetch(url).then((r) => {
@@ -12,11 +12,13 @@ const fetcher = (url: string) =>
   })
 
 export function useJobs() {
-  const { data, error, isLoading } = useSWR<ApiResp>('/api/jobs', fetcher, {  suspense: false,              // <— enable suspense
+  const { data, error, isLoading } = useSWR<ApiResp>('/api/jobs', fetcher, {  suspense: false,              // <— disable suspense
     revalidateOnFocus: false,
     dedupingInterval: 60_000, // 1 min: any component asking within a minute shares the cache
   })
-
+  // Shuffle jobs to provide varied listings each time
+  // Memoized to avoid reshuffling on every render
+  // Shuffle only when data changes
   const shuffledJobs = useMemo(() => {
     const arr = (data?.jobs ?? []).slice()
     for (let i = arr.length - 1; i > 0; i--) {

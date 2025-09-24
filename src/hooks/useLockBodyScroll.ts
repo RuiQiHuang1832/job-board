@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-
+// Not used anymore
 export default function useLockBodyScroll(locked: boolean) {
   useEffect(() => {
     if (typeof window === 'undefined') return

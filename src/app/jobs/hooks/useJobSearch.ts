@@ -34,7 +34,7 @@ const reducer = (state: State, action: Action): State => {
       return state
   }
 }
-
+// Initial state from URL params for reducer
 const init = (args: {
   allJobs: readonly DetailedJobProps[]
   getParam: (k: string) => string | null
@@ -71,7 +71,7 @@ export const useJobSearch = (allJobs: readonly DetailedJobProps[]) => {
 
   //TODO: Eventually remove this part, and instead do DEFAULT_SEARCH_QUERY + DEFAULT_LOCATION, RIGHT NOW IT TAKES TOP 6, as noted in NOTES.md
 
-  // ✅ Single function that syncs ALL current state to URL
+  // Single function that syncs ALL current state to URL
   const syncURLWithState = useSyncURLWithState({
     updateURL,
     searchInputRef,

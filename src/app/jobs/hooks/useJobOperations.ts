@@ -12,6 +12,7 @@ type Action =
   | { type: 'TOGGLE_SAVED'; id: string }
   | { type: 'TOGGLE_HIDDEN'; id: string }
   | { type: 'TOGGLE_APPLIED'; id: string }
+  
 const JOB_STATE_KEY = 'jobboard:v1:states'
 
 const reducer = (state: Store, action: Action): Store => {
