@@ -4,7 +4,7 @@ A fully-featured job board demonstrating advanced state management, polished UI/
 
 Includes job search, filtering, pagination, and persistent save/dismiss functionality.
 
-## ✨ Features
+##  Features
 
 - **Search, Filter & Sort** – quickly find jobs by keyword, location, or type
 - **URL & Back Navigation** – smooth browsing with preserved search state
@@ -16,7 +16,7 @@ Includes job search, filtering, pagination, and persistent save/dismiss function
 
 
 
-## 📸 Screenshots
+##  Screenshots
 
 ![Home Page](./public/screenshots/home.png)
 
@@ -30,7 +30,7 @@ _Search results._
 
 
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** Next.js (App Router)
 - **Frontend:** React, TypeScript, TailwindCSS, shadcn/ui
@@ -39,7 +39,7 @@ _Search results._
 
 
 
-## 🚀 Getting Started
+## Getting Started
 
 Clone the repo and install dependencies:
 
@@ -52,7 +52,7 @@ npm run dev
 
 
 
-## 📊 Data Source
+## Data Source
 
 Snapshot captured on 9/22/2025 from public Greenhouse pages.
 
@@ -60,13 +60,13 @@ One-off script kept private to avoid ToS churn; happy to share on request.
 
 
 
-## 📄 Status
+## Status
 
 Project complete & deployed — ongoing polish and feature experiments.
 
 
 
-## 🔮 Future Ideas
+## Future Ideas
 
 - Real-time job scraping with APIs
 - Authentication & user accounts
