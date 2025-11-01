@@ -4,12 +4,6 @@ A fully-featured job board demonstrating advanced state management, polished UI/
 
 Includes job search, filtering, pagination, and persistent save/dismiss functionality.
 
-## 🌐 Live Demo
-
-[job-board-rho-one.vercel.app/jobs](https://job-board-rho-one.vercel.app/jobs)
-
-
-
 ## ✨ Features
 
 - **Search, Filter & Sort** – quickly find jobs by keyword, location, or type
