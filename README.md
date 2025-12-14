@@ -39,17 +39,6 @@ _Search results._
 
 
 
-## Getting Started
-
-Clone the repo and install dependencies:
-
-```bash
-git clone https://github.com/yourusername/jobmatch.git
-cd jobmatch
-npm install
-npm run dev
-```
-
 
 
 ## Data Source
