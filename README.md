@@ -53,10 +53,3 @@ One-off script kept private to avoid ToS churn; happy to share on request.
 
 Project complete & deployed — ongoing polish and feature experiments.
 
-
-
-## Future Ideas
-
-- Real-time job scraping with APIs
-- Authentication & user accounts
-- Admin dashboard for job posting
