@@ -39,17 +39,10 @@ _Search results._
 
 
 
-
-
 ## Data Source
 
 Snapshot captured on 9/22/2025 from public Greenhouse pages.
 
 One-off script kept private to avoid ToS churn; happy to share on request.
 
-
-
-## Status
-
-Project complete & deployed — ongoing polish and feature experiments.
 
